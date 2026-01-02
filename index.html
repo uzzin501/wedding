@@ -10,182 +10,191 @@
 </head>
 
 <body>
-  <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false">☰</button>
+  <div class="phone-frame">
 
-<nav class="menu-panel" id="menuPanel" aria-hidden="true">
-  <button class="menu-close" id="menuClose" aria-label="메뉴 닫기">✕</button>
+    <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false">☰</button>
 
-  <a href="#sec-hero" class="menu-link">초대합니다</a>
-  <a href="#sec-couple" class="menu-link">저희를 소개합니다</a>
-  <a href="#sec-ceremony" class="menu-link">이때, 이곳에서 결혼합니다</a>
-  <a href="#sec-gallery" class="menu-link">예쁘게 봐주세요</a>
-  <a href="#sec-info" class="menu-link">안내드립니다</a>
-</nav>
-<div class="menu-dim" id="menuDim"></div>
-  <div class="container">
+    <nav class="menu-panel" id="menuPanel" aria-hidden="true">
+      <button class="menu-close" id="menuClose" aria-label="메뉴 닫기">✕</button>
+      <a href="#sec-hero" class="menu-link">초대합니다</a>
+      <a href="#sec-couple" class="menu-link">저희를 소개합니다</a>
+      <a href="#sec-ceremony" class="menu-link">이때, 이곳에서 결혼합니다</a>
+      <a href="#sec-gallery" class="menu-link">예쁘게 봐주세요</a>
+      <a href="#sec-info" class="menu-link">안내드립니다</a>
+    </nav>
 
+    <div class="menu-backdrop" id="menuBackdrop" hidden></div>
+
+    <!-- HERO -->
     <div class="bg-section bg-1" id="sec-hero">
-      <section class="hero" >
-        <div class="title fade-up delay-1">WEDDING INVITATION</div>
+      <div class="inner">
+        <section class="hero">
+          <div class="title fade-up delay-1">WEDDING INVITATION</div>
 
-        <div class="names fade-up delay-2">
-          용권 <span class="heart">♥</span> 유진
-        </div>
-
-        <div class="intro fade-up delay-3">
-          <span class="quote">
-            공간의 광막함과 시간의 영겁에서<br />
-            행성 하나와 찰나의 순간을<br />
-            그대와 공유할 수 있었음은 나에게는 하나의 기쁨이었다.
-          </span>
-          <br />
-          <span class="quote-source"> - 칼 세이건 &lt;코스모스&gt; -</span>
-        </div>
-
-        <div class="invitation fade-up delay-4">
-          서로 다른 두 사람이 만나<br/>
-          하나의 우주를 이루려고 합니다. <br/><br/>
-          저희 우주의 별이 되어 <br/>
-          그 시작의 순간을 함께 <br/>
-          찬란히 빛내 주시면 감사하겠습니다.
-        </div>
-      </section>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="bg-section bg-2" id="sec-couple">
-      <section class="couple-section">
-        <h2 class="fade-up delay-1">저희는요,</h2>
-
-        <div class="couple-row fade-up delay-2">
-          <div class="person groom">
-            <img src="groom.jpg" alt="신랑 문용권" />
-            <div class="person-info">
-              <div class="role groom-color">신랑</div>
-              <div class="name">
-                문용권
-                <a href="tel:01073029104" class="call-icon" aria-label="전화하기">☎</a>
-              </div>
-              <div class="parents">문대중 · 강소영의 아들</div>
-            </div>
+          <div class="names fade-up delay-2">
+            용권 <span class="heart">♥</span> 유진
           </div>
 
-          <div class="person bride">
-            <img src="bride.jpg" alt="신부 정유진" />
-            <div class="person-info">
-              <div class="role bride-color">신부</div>
-              <div class="name">
-                정유진
-                <a href="tel:01036509851" class="call-icon" aria-label="전화하기">☎</a>
-              </div>
-              <div class="parents">정충식 · 임민아의 딸</div>
-            </div>
+          <div class="intro fade-up delay-3">
+            <span class="quote">
+              공간의 광막함과 시간의 영겁에서<br />
+              행성 하나와 찰나의 순간을<br />
+              그대와 공유할 수 있었음은 나에게는 하나의 기쁨이었다.
+            </span>
+            <br />
+            <span class="quote-source"> - 칼 세이건 &lt;코스모스&gt; -</span>
           </div>
-        </div>
 
-        <section class="greeting-section">
-          <div class="greeting-text fade-up delay-3">
-            20살, 22살 대학교 선후배로 만나<br>
-            친한 친구에서 가장 친한 연인으로 발전해<br>
-
-            <section class="section love-days-section">
-              <div class="love-days-text" id="loveDaysText"></div>
-            </section>
-
-            여러 시간이 쌓여 어느덧 교사라는 길을 함께 걸으며<br>
-            같은 목표를 갖고 미래를 그려나가려고 합니다.<br/>
+          <div class="invitation fade-up delay-4">
+            서로 다른 두 사람이 만나<br/>
+            하나의 우주를 이루려고 합니다. <br/><br/>
+            저희 우주의 별이 되어 <br/>
+            그 시작의 순간을 함께 <br/>
+            찬란히 빛내 주시면 감사하겠습니다.
           </div>
         </section>
-      </section>
+      </div>
     </div>
 
     <div class="divider"></div>
 
-    <div class="bg-section bg-3" id="sec-ceremony">
-      <section class="ceremony">
-        <h2 class="fade-up delay-1">예식 안내</h2>
+    <!-- COUPLE -->
+    <div class="bg-section bg-2" id="sec-couple">
+      <div class="inner">
+        <section class="couple-section">
+          <h2 class="fade-up delay-1">저희는요,</h2>
 
-        <div class="info fade-up delay-2">
-          2026년 11월 29일 (일) 오후 5시<br />
-          더링크 웨딩홀 5층 가든홀<br/>
-          <div class="shuttle">
-            (신도림역 1번 출구 셔틀버스 이용 가능합니다.)
+          <div class="couple-row fade-up delay-2">
+            <div class="person groom">
+              <img src="groom.jpg" alt="신랑 문용권" />
+              <div class="person-info">
+                <div class="role groom-color">신랑</div>
+                <div class="name">
+                  문용권
+                  <a href="tel:01073029104" class="call-icon" aria-label="전화하기">☎</a>
+                </div>
+                <div class="parents">문대중 · 강소영의 아들</div>
+              </div>
+            </div>
+
+            <div class="person bride">
+              <img src="bride.jpg" alt="신부 정유진" />
+              <div class="person-info">
+                <div class="role bride-color">신부</div>
+                <div class="name">
+                  정유진
+                  <a href="tel:01036509851" class="call-icon" aria-label="전화하기">☎</a>
+                </div>
+                <div class="parents">정충식 · 임민아의 딸</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
 
-      <div class="map-buttons fade-up delay-2">
-        <a href="https://naver.me/FqWtKQUF" target="_blank" class="map-icon naver" aria-label="네이버 지도 길찾기">
-          <img src="naver-map.png" alt="네이버 지도"/>
-        </a>
-        <a href="https://kko.to/6I8s2Z4dS8" target="_blank" class="map-icon kakao" aria-label="카카오맵 길찾기">
-          <img src="kakao-map.png" alt="카카오맵"/>
-        </a>
-        <a href="https://tmap.co.kr" target="_blank" class="map-icon tmap" aria-label="Tmap 길찾기">
-          <img src="tmap.png" alt="Tmap"/>
-        </a>
-      </div>
+          <section class="greeting-section">
+            <div class="greeting-text fade-up delay-3">
+              20살, 22살 대학교 선후배로 만나<br>
+              친한 친구에서 가장 친한 연인으로 발전해<br>
 
-      <div class="calendar fade-up delay-3">
-        <div class="calendar-header">2026년 11월</div>
+              <section class="section love-days-section">
+                <div class="love-days-text" id="loveDaysText"></div>
+              </section>
 
-        <div class="calendar-grid">
-          <span class="day-name">일</span><span class="day-name">월</span><span class="day-name">화</span>
-          <span class="day-name">수</span><span class="day-name">목</span><span class="day-name">금</span><span class="day-name">토</span>
-
-          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
-          <span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
-          <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span>
-          <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
-
-          <span class="wedding-day">
-            <span class="day-number">29</span>
-            <span class="heart-mark">♥</span>
-          </span>
-          <span>30</span>
-        </div>
-
-        <div class="calendar-caption" id="calendarCaption"></div>
+              여러 시간이 쌓여 어느덧 교사라는 길을 함께 걸으며<br>
+              같은 목표를 갖고 미래를 그려나가려고 합니다.<br/>
+            </div>
+          </section>
+        </section>
       </div>
     </div>
 
     <div class="divider"></div>
 
+    <!-- CEREMONY -->
+    <div class="bg-section bg-3" id="sec-ceremony">
+      <div class="inner">
+        <section class="ceremony">
+          <h2 class="fade-up delay-1">예식 안내</h2>
+
+          <div class="info fade-up delay-2">
+            2026년 11월 29일 (일) 오후 5시<br />
+            더링크 웨딩홀 5층 가든홀<br/>
+            <div class="shuttle">
+              (신도림역 1번 출구 셔틀버스 이용 가능합니다.)
+            </div>
+          </div>
+        </section>
+
+        <div class="map-buttons fade-up delay-2">
+          <a href="https://naver.me/FqWtKQUF" target="_blank" class="map-icon naver" aria-label="네이버 지도 길찾기">
+            <img src="naver-map.png" alt="네이버 지도"/>
+          </a>
+          <a href="https://kko.to/6I8s2Z4dS8" target="_blank" class="map-icon kakao" aria-label="카카오맵 길찾기">
+            <img src="kakao-map.png" alt="카카오맵"/>
+          </a>
+          <a href="https://tmap.co.kr" target="_blank" class="map-icon tmap" aria-label="Tmap 길찾기">
+            <img src="tmap.png" alt="Tmap"/>
+          </a>
+        </div>
+
+        <div class="calendar fade-up delay-3">
+          <div class="calendar-header">2026년 11월</div>
+          <div class="calendar-grid">
+            <span class="day-name">일</span><span class="day-name">월</span><span class="day-name">화</span>
+            <span class="day-name">수</span><span class="day-name">목</span><span class="day-name">금</span><span class="day-name">토</span>
+            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+            <span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
+            <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span>
+            <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+            <span class="wedding-day">
+              <span class="day-number">29</span>
+              <span class="heart-mark">♥</span>
+            </span>
+            <span>30</span>
+          </div>
+          <div class="calendar-caption" id="calendarCaption"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- GALLERY -->
     <div class="bg-section bg-4" id="sec-gallery">
-      <section class="photo-section">
-        <h2 class="fade-up delay-1">갤러리</h2>
+      <div class="inner">
+        <section class="photo-section">
+          <h2 class="fade-up delay-1">갤러리</h2>
+          <div class="photo-grid fade-up delay-2" id="photoGrid">
+            <img src="photo1.jpg" onclick="openViewer(0)" />
+            <img src="photo2.jpg" onclick="openViewer(1)" />
+            <img src="photo3.jpg" onclick="openViewer(2)" />
+            <img src="photo4.jpg" onclick="openViewer(3)" />
+            <img src="photo5.jpg" onclick="openViewer(4)" />
+            <img src="photo6.jpg" onclick="openViewer(5)" />
+            <img src="photo7.jpg" onclick="openViewer(6)" />
+            <img src="photo8.jpg" onclick="openViewer(7)" />
+            <img src="photo9.jpg" onclick="openViewer(8)" />
 
-        <div class="photo-grid fade-up delay-2" id="photoGrid">
-          <img src="photo1.jpg" onclick="openViewer(0)" />
-          <img src="photo2.jpg" onclick="openViewer(1)" />
-          <img src="photo3.jpg" onclick="openViewer(2)" />
-          <img src="photo4.jpg" onclick="openViewer(3)" />
-          <img src="photo5.jpg" onclick="openViewer(4)" />
-          <img src="photo6.jpg" onclick="openViewer(5)" />
-          <img src="photo7.jpg" onclick="openViewer(6)" />
-          <img src="photo8.jpg" onclick="openViewer(7)" />
-          <img src="photo9.jpg" onclick="openViewer(8)" />
+            <img src="photo10.jpg" onclick="openViewer(9)" class="hidden" />
+            <img src="photo11.jpg" onclick="openViewer(10)" class="hidden" />
+            <img src="photo12.jpg" onclick="openViewer(11)" class="hidden" />
+            <img src="photo13.jpg" onclick="openViewer(12)" class="hidden" />
 
-          <img src="photo10.jpg" onclick="openViewer(9)" class="hidden" />
-          <img src="photo11.jpg" onclick="openViewer(10)" class="hidden" />
-          <img src="photo12.jpg" onclick="openViewer(11)" class="hidden" />
-          <img src="photo13.jpg" onclick="openViewer(12)" class="hidden" />
+            <button class="photo-more-btn-top" id="photoMoreBtnTop" onclick="togglePhotos()">∨</button>
+          </div>
 
-          <button class="photo-more-btn-top" id="photoMoreBtnTop" onclick="togglePhotos()">∨</button>
-        </div>
-
-        <button class="photo-more-btn-bottom hidden" id="photoMoreBtnBottom" onclick="togglePhotos()">∧</button>
-      </section>
+          <button class="photo-more-btn-bottom hidden" id="photoMoreBtnBottom" onclick="togglePhotos()">∧</button>
+        </section>
+      </div>
     </div>
 
     <div class="divider"></div>
 
+    <!-- INFO -->
     <div class="bg-section bg-5" id="sec-info">
-      <h2 class="fade-up delay-1">안내사항</h2>
-
-      <section class="info-section fade-up delay-2">
-        <!-- 오시는 길 -->
+      <div class="inner">
+        <h2 class="fade-up delay-1">안내사항</h2>
+        <section class="info-section fade-up delay-2">
+                  <!-- 오시는 길 -->
         <div class="info-item">
           <div class="account-header" onclick="toggleInfo(this)">
             <span>오시는 길</span>
@@ -334,8 +343,8 @@
             </div>
           </div>
         </div>
-
-      </section>
+        </section>
+      </div>
     </div>
 
     <div class="divider"></div>
@@ -345,27 +354,27 @@
       축복해주셔서 정말 감사합니다.
     </footer>
 
+    <!-- 사진 뷰어 -->
+    <div class="photo-viewer" id="photoViewer">
+      <div class="viewer-counter" id="viewerCounter">1 / 9</div>
+      <button class="viewer-close" onclick="closeViewer()">✕</button>
+      <button class="viewer-prev" onclick="prevPhoto()">‹</button>
+      <img id="viewerImage" alt="확대 이미지"/>
+      <button class="viewer-next" onclick="nextPhoto()">›</button>
+    </div>
+
+    <!-- BGM -->
+    <audio id="bgm" preload="auto" loop>
+      <source src="audio/bgm.mp3" type="audio/mpeg" />
+    </audio>
+
+    <button class="bgm-toggle" id="bgmBtn" aria-label="배경음악 켜기/끄기">
+      <img id="bgmIcon" src="volumedown.png" alt="음악 꺼짐" />
+    </button>
+
+    <div class="toast" id="bgmToast" aria-live="polite">🔊 음악이 재생됩니다</div>
+
   </div>
-
-  <!-- 사진 뷰어 -->
-  <div class="photo-viewer" id="photoViewer">
-    <div class="viewer-counter" id="viewerCounter">1 / 9</div>
-    <button class="viewer-close" onclick="closeViewer()">✕</button>
-    <button class="viewer-prev" onclick="prevPhoto()">‹</button>
-    <img id="viewerImage" alt="확대 이미지"/>
-    <button class="viewer-next" onclick="nextPhoto()">›</button>
-  </div>
-
-  <!-- BGM -->
-  <audio id="bgm" preload="auto" loop>
-    <source src="audio/bgm.mp3" type="audio/mpeg" />
-  </audio>
-
-  <button class="bgm-toggle" id="bgmBtn" aria-label="배경음악 켜기/끄기">
-    <img id="bgmIcon" src="volumedown.png" alt="음악 꺼짐" />
-  </button>
-
-  <div class="toast" id="bgmToast" aria-live="polite">🔊 음악이 재생됩니다</div>
 
   <script src="script.js"></script>
 </body>
