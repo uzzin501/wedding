@@ -78,11 +78,14 @@ body {
    배경 섹션
 ========================= */
 
-.bg-section {
+.bg-section{
+  position: relative;
+  min-height: 100vh;    /* ✅ 기본 */
+  min-height: 100svh;   /* ✅ 지원되는 브라우저면 이게 우선 */
+  padding: 60px 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 60px 0;
 }
 
 .bg-1 { background-image: url('bg/bg1.jpg'); }
@@ -751,3 +754,21 @@ body {
 .divider + .bg-section {
   padding-top: 60px;
 }
+
+/* 각 배경 섹션이 화면 높이를 최소로 차지 */
+.bg-section{
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 40px 0;   /* ✅ 60 → 40 추천 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 내용이 화면 위로 몰리지 않게 컨테이너는 유지 */
+.bg-section > *{
+  width: 100%;
+}
+.bg-section { margin: 0; }
+.divider { margin: 0 auto; }
