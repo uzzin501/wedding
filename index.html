@@ -12,17 +12,16 @@
 
 <body>
   <div class="container">
-    <div class="bg-section bg-1">
-
+  <div class="bg-section bg-1">
     <!-- HERO / 인트로 -->
     <section class="hero">
-      <div class="title">WEDDING INVITATION</div>
+      <div class="title fade-up delay-1">WEDDING INVITATION</div>
 
-      <div class="names">
+      <div class="names fade-up delay-2">
         용권 <span class="heart">♥</span> 유진
       </div>
 
-      <div class="intro">
+      <div class="intro fade-up delay-3">
         <span class="quote">
           공간의 광막함과 시간의 영겁에서<br />
           행성 하나와 찰나의 순간을<br />
@@ -32,7 +31,7 @@
         <span class="quote-source"> - 칼 세이건  &lt;코스모스&gt; -</span>
       </div>
       
-      <div class="invitation">
+      <div class="invitation fade-up delay-4">
         서로 다른 두 사람이 만나<br/>
         하나의 우주를 이루려고 합니다. <br/><br/>
         저희 우주의 별이 되어 <br/>
@@ -45,9 +44,9 @@
     <div class="divider"></div>
     <div class="bg-section bg-2">
     <section class="couple-section">
-  <h2>저희는요,</h2>
+  <h2 class="fade-up delay-1">저희는요,</h2>
 
-  <div class="couple-row">
+  <div class="couple-row fade-up delay-2">
     <!-- 신랑 -->
     <div class="person groom">
       <img src="groom.jpg" alt="신랑 문용권" />
@@ -83,7 +82,7 @@
 
 
 <section class="greeting-section">
-  <div class="greeting-text">
+  <div class="greeting-text fade-up delay-3">
     20살, 22살 대학교 선후배로 만나<br>
     친한 친구에서 가장 친한 연인으로 발전해<br>
     <section class="section love-days-section">
@@ -102,8 +101,8 @@
     <!-- 예식 안내 -->
      
     <section class="ceremony">
-      <h2>예식 안내</h2>
-      <div class="info">
+      <h2 class="fade-up delay-1">예식 안내</h2>
+      <div class="info fade-up delay-2">
         2026년 11월 29일 (일) 오후 5시<br />
         더링크 웨딩홀 5층 가든홀<br/>
         <div class="shuttle">
@@ -113,7 +112,7 @@
     </section>
 
   <!-- 길찾기 버튼 -->
- <div class="map-buttons">
+ <div class="map-buttons fade-up delay-2">
   <!-- 네이버 -->
   <a href="https://naver.me/FqWtKQUF" target="_blank" class="map-icon naver" aria-label="네이버 지도 길찾기">
     <img src="naver-map.png" alt="네이버 지도"/>
@@ -131,7 +130,7 @@
 </div>
 
     <!-- 달력 -->
-<div class="calendar">
+<div class="calendar fade-up delay-3">
   <div class="calendar-header">
     2026년 11월
   </div>
@@ -170,9 +169,9 @@
   <div class="bg-section bg-4">
 <!-- 사진 갤러리 -->
 <section class="photo-section">
-  <h2>갤러리</h2>
+  <h2 class="fade-up delay-1">갤러리</h2>
 
-  <div class="photo-grid" id="photoGrid">
+  <div class="photo-grid fade-up delay-2" id="photoGrid">
     <!-- 처음 사진 -->
     <img src="photo1.jpg" onclick="openViewer(0)" />
     <img src="photo2.jpg" onclick="openViewer(1)" />
@@ -205,8 +204,8 @@
 
 <div class="bg-section bg-5">
 
-<h2>안내사항</h2>
-<section class="info-section">
+<h2 class="fade-up delay-1">안내사항</h2>
+<section class="info-section fade-up delay-2">
   <!-- 오시는 길 -->
     <div class="info-item">
       <div class="account-header" onclick="toggleInfo(this)">
@@ -362,8 +361,6 @@
 
   </div>
 
-  <script src="script.js"></script>
-
   <!-- 사진 크게보기 뷰어 -->
 <div class="photo-viewer" id="photoViewer">
   <div class="viewer-counter" id="viewerCounter">1 / 9</div>
@@ -383,7 +380,7 @@
 </button>
 <div class="toast" id="bgmToast" aria-live="polite">🔊 음악이 재생됩니다</div>
 
-
+  <script src="script.js"></script>
 </body>
 </html>
 

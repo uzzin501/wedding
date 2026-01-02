@@ -4,6 +4,12 @@ function copyAccount(text) {
     .catch(() => alert('복사에 실패했습니다.'));
 }
 
+function setVh() {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+}
+setVh();
+window.addEventListener('resize', setVh);
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const bgm   = document.getElementById('bgm');
@@ -199,15 +205,18 @@ function updateViewerImage() {
 }
 
 // --- 뷰어 터치 슬라이드 ---
-let startX = 0;
-const viewer = document.getElementById('photoViewer');
+document.addEventListener('DOMContentLoaded', () => {
+  let startX = 0;
+  const viewer = document.getElementById('photoViewer');
+  if (!viewer) return;
 
-viewer.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-viewer.addEventListener('touchend', e => {
-  const endX = e.changedTouches[0].clientX;
-  const diff = startX - endX;
-  if (diff > 50) nextPhoto();
-  if (diff < -50) prevPhoto();
+  viewer.addEventListener('touchstart', e => startX = e.touches[0].clientX, { passive: true });
+  viewer.addEventListener('touchend', e => {
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    if (diff > 50) nextPhoto();
+    if (diff < -50) prevPhoto();
+  });
 });
 
 // --- 안내사항 접기/펼치기 ---
@@ -216,3 +225,22 @@ function toggleInfo(header) {
   infoItem.classList.toggle('open');
 }
 
+function initFadeUp() {
+  const targets = document.querySelectorAll('.fade-up');
+  if (!targets.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  targets.forEach(el => observer.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initFadeUp();
+});
