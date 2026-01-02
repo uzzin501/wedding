@@ -267,3 +267,41 @@ function updateBgLayers(){
 window.addEventListener('scroll', updateBgLayers, { passive: true });
 window.addEventListener('resize', updateBgLayers);
 document.addEventListener('DOMContentLoaded', updateBgLayers);
+
+(() => {
+  const btn = document.getElementById('menuBtn');
+  const panel = document.getElementById('menuPanel');
+  const closeBtn = document.getElementById('menuClose');
+  const backdrop = document.getElementById('menuBackdrop');
+
+  function openMenu(){
+    panel.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    panel.setAttribute('aria-hidden', 'false');
+    backdrop.hidden = false;
+  }
+
+  function closeMenu(){
+    panel.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    panel.setAttribute('aria-hidden', 'true');
+    backdrop.hidden = true;
+  }
+
+  btn?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  backdrop?.addEventListener('click', closeMenu);
+
+  // 메뉴 클릭 시 닫고 이동
+  panel?.addEventListener('click', (e) => {
+    const a = e.target.closest('a.menu-link');
+    if (!a) return;
+    closeMenu(); // 닫고
+    // 기본 anchor 이동은 scroll-behavior:smooth가 처리
+  });
+
+  // ESC로 닫기
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();

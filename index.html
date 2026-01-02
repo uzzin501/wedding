@@ -11,12 +11,28 @@
 </head>
 
 <body>
+  <!-- ✅ 상단 메뉴 버튼 + 패널 -->
+<button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false">☰</button>
+
+<nav class="menu-panel" id="menuPanel" aria-hidden="true">
+  <button class="menu-close" id="menuClose" aria-label="메뉴 닫기">✕</button>
+
+  <a href="#sec-hero" class="menu-link">초대장</a>
+  <a href="#sec-couple" class="menu-link">저희는요</a>
+  <a href="#sec-ceremony" class="menu-link">예식 안내</a>
+  <a href="#sec-gallery" class="menu-link">갤러리</a>
+  <a href="#sec-info" class="menu-link">안내사항</a>
+</nav>
+
+<!-- 메뉴 열렸을 때 뒤 클릭막는 오버레이 -->
+<div class="menu-backdrop" id="menuBackdrop" hidden></div>
+
   <div class="phone-frame">
   <div class="container">
   <div class="bg-section bg-1">
     <div class="bg-layer"></div>
     <!-- HERO / 인트로 -->
-    <section class="hero">
+    <section class="hero" id="sec-hero">
       <div class="title fade-up delay-1">WEDDING INVITATION</div>
 
       <div class="names fade-up delay-2">
@@ -46,7 +62,7 @@
     <div class="divider"></div>
     <div class="bg-section bg-2">
       <div class="bg-layer"></div>
-    <section class="couple-section">
+    <section class="couple-section" id="sec-couple">
   <h2 class="fade-up delay-1">저희는요,</h2>
 
   <div class="couple-row fade-up delay-2">
@@ -104,7 +120,7 @@
     <div class="bg-layer"></div>
     <!-- 예식 안내 -->
      
-    <section class="ceremony">
+    <section class="ceremony" id="sec-ceremony">
       <h2 class="fade-up delay-1">예식 안내</h2>
       <div class="info fade-up delay-2">
         2026년 11월 29일 (일) 오후 5시<br />
@@ -173,7 +189,7 @@
   <div class="bg-section bg-4">
     <div class="bg-layer"></div>
 <!-- 사진 갤러리 -->
-<section class="photo-section">
+<section class="photo-section" id="sec-gallery">
   <h2 class="fade-up delay-1">갤러리</h2>
 
   <div class="photo-grid fade-up delay-2" id="photoGrid">
@@ -210,7 +226,7 @@
 <div class="bg-section bg-5">
   <div class="bg-layer"></div>
 
-<h2 class="fade-up delay-1">안내사항</h2>
+<h2 class="fade-up delay-1"  id="sec-info">안내사항</h2>
 <section class="info-section fade-up delay-2">
   <!-- 오시는 길 -->
     <div class="info-item">

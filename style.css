@@ -636,7 +636,7 @@ body {
 ========================= */
 .traffic {
   text-align: left;     /* ← 핵심 */
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.8;
 }
 
@@ -868,4 +868,86 @@ body {
 }
 .account-left{
   align-items: flex-start;
+}
+
+/* ✅ 부드러운 이동 */
+html { scroll-behavior: smooth; }
+
+/* ✅ 메뉴 버튼 (왼쪽 상단 고정) */
+.menu-btn{
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 20000;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* ✅ 메뉴 패널 */
+.menu-panel{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20001;
+  width: 240px;
+  height: 100vh;
+  padding: 16px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 10px 0 30px rgba(0,0,0,0.12);
+
+  transform: translateX(-105%);
+  transition: transform 0.25s ease;
+}
+
+.menu-panel.open{ transform: translateX(0); }
+
+.menu-close{
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+}
+
+.menu-link{
+  display: block;
+  padding: 12px 8px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.menu-link:hover{
+  background: rgba(0,0,0,0.06);
+}
+
+/* ✅ 뒤 오버레이 */
+.menu-backdrop{
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  background: rgba(0,0,0,0.28);
+}
+
+/* ✅ PC에서 phone-frame(512px)에 맞춰 보이게(선택) */
+@media (min-width: 768px){
+  .menu-btn{
+    left: calc(50% - 256px + 14px); /* phone-frame 왼쪽 안쪽 */
+  }
+  .menu-panel{
+    left: calc(50% - 256px);       /* phone-frame 시작점 */
+  }
+  .menu-backdrop{
+    background: rgba(0,0,0,0.18);
+  }
 }
