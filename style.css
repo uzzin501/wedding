@@ -560,7 +560,7 @@ body {
 }
 
 .account-body .thanks {
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 6px;
 }
 
@@ -568,24 +568,28 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between; /* 왼쪽 묶음과 오른쪽 아이콘 배치 */
-  margin: 6px 0;
+  margin: 8px 0;
 }
 
-.account-left {
+.account-left{
+  flex: 1;                    /* 왼쪽이 남은 공간 다 먹게 */
   display: flex;
-  align-items: center;
-  gap: 6px; /* 이름과 계좌번호 사이 간격 */
+  flex-direction: column;     /* 이름/계좌를 세로로 */
+  align-items: flex-start;    /* 왼쪽 정렬 */
+  min-width: 0;               /* 긴 글자 줄바꿈/말줄임 안정화 */
+  text-align: left;
+  gap: 2px;
 }
 
 .account-name {
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   color: #333;
 }
 
 .account-number {
   font-weight: 400;
-  font-size: 13px;
+  font-size: 14px;
   color: #555;
 }
 
@@ -646,10 +650,14 @@ body {
   z-index: 9999;
 }
 
-.bgm-toggle.on {
-  /* 켜짐 표시(선택) */
-  transform: scale(1.03);
+.bgm-toggle img {
+  width: 22px;
+  height: 22px;
+  pointer-events: none; /* 클릭은 버튼이 받게 */
+  display: block;
+  margin: 0 auto;
 }
+
 
 .toast {
   position: fixed;
@@ -658,7 +666,7 @@ body {
   transform: translateX(-50%);
   padding: 10px 14px;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 13px;  
   background: rgba(0,0,0,0.72);
   color: #fff;
   opacity: 0;
@@ -671,3 +679,4 @@ body {
   opacity: 1;
   transform: translateX(-50%) translateY(-6px);
 }
+

@@ -6,43 +6,54 @@ function copyAccount(text) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  const bgm = document.getElementById('bgm');
-  const btn = document.getElementById('bgmBtn');
-  const toast = document.getElementById('bgmToast'); // ✅ 여기서 가져와야 함
+  const bgm   = document.getElementById('bgm');
+  const btn   = document.getElementById('bgmBtn');
+  const toast = document.getElementById('bgmToast');
 
-  const showToast = (msg = '🔊 음악이 재생됩니다', ms = 2000) => {
-    if (!toast) return;
+  if (!bgm || !btn || !toast) return;
+
+  /* ---------- Toast ---------- */
+  const showToast = (msg, ms = 1800) => {
     toast.textContent = msg;
     toast.classList.add('show');
     clearTimeout(showToast._t);
     showToast._t = setTimeout(() => toast.classList.remove('show'), ms);
   };
 
-  if (!bgm || !btn) return;
-
+  /* ---------- UI ---------- */
   bgm.volume = 0.35;
 
   const setUi = (playing) => {
-    btn.textContent = playing ? '🔈' : '🔊';
-    btn.classList.toggle('on', playing);
-  };
+  const img = document.getElementById('bgmIcon');
+  if (!img) return;
 
-  const tryAutoPlay = async (reason = '') => {
+  img.src = playing ? 'volumeup.png' : 'volumedown.png';
+  img.alt = playing ? '음악 켜짐' : '음악 꺼짐';
+
+  btn.classList.toggle('on', playing);
+};
+
+
+  /* ---------- 0) 무조건 토스트 ---------- */
+  showToast('🔊 배경음악이 재생됩니다');
+
+  /* ---------- 1) 자동재생 시도 ---------- */
+  const tryAutoPlay = async () => {
     try {
       await bgm.play();
       setUi(true);
-      showToast(reason ? `🔊 음악 재생됨 (${reason})` : '🔊 음악이 재생됩니다', 2000);
       return true;
-    } catch (e) {
+    } catch {
       setUi(false);
       return false;
     }
   };
 
-  tryAutoPlay('auto');
+  tryAutoPlay();
 
+  /* ---------- 2) 첫 터치 / 클릭 시 재시도 ---------- */
   const unlock = async () => {
-    const ok = await tryAutoPlay('unlock');
+    const ok = await tryAutoPlay();
     if (ok) {
       document.removeEventListener('touchstart', unlock);
       document.removeEventListener('click', unlock);
@@ -52,26 +63,29 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('touchstart', unlock, { passive: true });
   document.addEventListener('click', unlock);
 
+  /* ---------- 3) 버튼 토글 ---------- */
   btn.addEventListener('click', async (e) => {
     e.stopPropagation();
     try {
       if (bgm.paused) {
         await bgm.play();
         setUi(true);
-        showToast('🔊 음악이 재생됩니다.', 1200);
+        showToast('🔊 음악이 재생됩니다');
       } else {
         bgm.pause();
         setUi(false);
-        showToast('🔇 음악이 꺼졌어요.', 1200);
+        showToast('🔇 음악이 꺼졌어요');
       }
     } catch (err) {
-      alert('재생이 제한될 수 있어요. 파일 경로(audio/bgm.mp3)와 서버에서 실행 중인지 확인해 주세요.');
+      alert('브라우저 정책으로 재생이 제한될 수 있어요.');
       console.error(err);
     }
   });
 
+  /* ---------- 초기 UI ---------- */
   setUi(false);
 });
+
 
 
 let photosOpened = false;
