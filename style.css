@@ -349,7 +349,7 @@ body {
   border-radius: 16px;
 
   /* ⭐ 투명도 + 유리 느낌 */
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
@@ -498,7 +498,7 @@ body {
 ========================= */
 /* photo-grid를 relative로 만들어서 버튼이 겹치게 함 */
 .photo-section {
-  padding-top: 40px;
+  padding-top: 0px;
   padding-bottom: 40px;
 }
 
@@ -758,7 +758,7 @@ body {
   border-radius: 999px;
   border: none;
   background: rgba(255,255,255,0.85);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 16px rgba(82, 82, 82, 0.3);
   font-size: 18px;
   cursor: pointer;
   z-index: 9999;
@@ -781,8 +781,8 @@ body {
   padding: 10px 14px;
   border-radius: 999px;
   font-size: 13px;  
-  background: rgba(0,0,0,0.72);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.5);
+  color: #000000;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease, transform 0.25s ease;
@@ -898,7 +898,7 @@ html { scroll-behavior: smooth; }
   width: 240px;
   height: 100vh;
   padding: 16px;
-  background: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.4);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 10px 0 30px rgba(0,0,0,0.12);
