@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const img = document.getElementById('bgmIcon');
   if (!img) return;
 
-  img.src = playing ? 'volumeup.png' : 'volumedown.png';
+  img.src = playing ? 'volumedown.png' : 'volumeup.png';
   img.alt = playing ? '음악 켜짐' : '음악 꺼짐';
 
   btn.classList.toggle('on', playing);
