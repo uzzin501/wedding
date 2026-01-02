@@ -59,14 +59,6 @@ body {
   font-weight: 400;
 }
 
-.container {
-  width: 100%;
-  max-width: 512px;
-  margin: 0 auto;
-  padding: 0 20px 60px;
-  text-align: center;
-}
-
 /* =========================
    HERO
 ========================= */
@@ -119,11 +111,29 @@ body {
 .bg-section{
   position: relative;
   width: 100%;
-  min-height: calc(var(--vh, 1vh) * 100);
-  padding: 40px 0;
+  min-height: 100svh;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+/* 하얀 오버레이 */
+.bg-section::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.78);
+}
+
+/* 내용이 오버레이 위로 */
+.bg-section > *{
+  position: relative;
+  z-index: 1;
+}
+
+.content{
+  padding: 60px 20px;
+  text-align: center;
 }
 
 .bg-1 { background-image: url('bg/bg1.jpg'); }
@@ -767,46 +777,77 @@ body {
   transform: translateX(-50%) translateY(-6px);
 }
 
-.bg-section {
-  position: relative;
-  padding: 60px 0;
-  background-size: cover;
-  background-position: center;
-}
 
-.bg-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0.78);
-}
-
-.bg-section > * {
-  position: relative;
-  z-index: 1;
-}
-
-.bg-section {
-  margin-bottom: 0;
-}
 .divider + .bg-section {
   padding-top: 60px;
 }
 
-/* 각 배경 섹션이 화면 높이를 최소로 차지 */
-.bg-section{
-  position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: 40px 0;   /* ✅ 60 → 40 추천 */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
 
-/* 내용이 화면 위로 몰리지 않게 컨테이너는 유지 */
-.bg-section > *{
-  width: 100%;
-}
 .bg-section { margin: 0; }
 .divider { margin: 0 auto; }
+
+/* =========================
+   ✅ 모바일은 꽉, PC는 폰폭(512px) 고정
+   (style.css 맨 아래에 붙이기)
+========================= */
+
+/* 1) 기본(모바일): 화면 꽉 */
+.phone-frame{
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px){
+  .phone-frame{
+    width: 512px;
+    min-height: 100vh;
+    margin: 0 auto;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    background: #faf9f7;
+  }
+}
+
+/* ✅ 예외: 왼쪽 정렬이 필요한 영역만 다시 left */
+.traffic,
+.account-left,
+.account-left *{
+  text-align: left;
+}
+
+/* account-left는 flex니까 왼쪽 정렬 유지 */
+.account-left{
+  align-items: flex-start;
+}
+
+/* ✅ 전체 기본 정렬을 폰 프레임 기준으로 통일 */
+.phone-frame{
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;           /* 핵심 */
+}
+
+/* 폰프레임 안의 블록들이 가운데로 오게 */
+.phone-frame > *{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ✅ PC에서만 512px 폰폭 고정 */
+@media (min-width: 768px){
+  .phone-frame{
+    width: 512px;
+    min-height: 100vh;
+    background: #faf9f7;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  }
+}
+
+/* ✅ 예외: 왼쪽 정렬이 필요한 영역만 left */
+.traffic,
+.account-left,
+.account-left *{
+  text-align: left;
+}
+.account-left{
+  align-items: flex-start;
+}
