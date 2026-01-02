@@ -114,10 +114,18 @@ body {
 .bg-section{
   position: relative;
   width: 100%;
-  min-height: 100svh;   /* ✅ 내용이 길어지면 섹션 자체가 늘어나며 스크롤 생김 */
-  background: none;     /* ✅ 배경은 레이어가 담당 */
-  overflow: visible;
+  height: 100svh;          /* ✅ 섹션 높이 고정 */
+  overflow-y: auto;        /* ✅ 내용이 길면 섹션 안에서 스크롤 */
+  overflow-x: hidden;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  -webkit-overflow-scrolling: touch;  /* 모바일 스크롤 부드럽게 */
+  overscroll-behavior: contain;       /* 상위 스크롤 튐 방지 */
 }
+
 
 /* ✅ 배경 레이어: 뷰포트 기준 고정 -> 내용 높이 변화로 리사이즈(줌) 안 함 */
 .bg-layer{
@@ -898,10 +906,10 @@ html { scroll-behavior: smooth; }
   width: 240px;
   height: 100vh;
   padding: 16px;
-  background: rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  box-shadow: 10px 0 30px rgba(0,0,0,0.12);
+  box-shadow: 10px 0 30px rgba(255, 255, 255, 0.12);
 
   transform: translateX(-105%);
   transition: transform 0.25s ease;
@@ -936,7 +944,7 @@ html { scroll-behavior: smooth; }
   position: fixed;
   inset: 0;
   z-index: 20000;
-  background: rgba(0,0,0,0.28);
+  background: rgba(0,0,0,0.3);
 }
 
 /* ✅ PC에서 phone-frame(512px)에 맞춰 보이게(선택) */
@@ -948,6 +956,6 @@ html { scroll-behavior: smooth; }
     left: calc(50% - 256px);       /* phone-frame 시작점 */
   }
   .menu-backdrop{
-    background: rgba(0,0,0,0.18);
+    background: rgba(157, 157, 157, 0.1);
   }
 }
