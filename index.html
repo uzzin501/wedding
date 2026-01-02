@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,25 +9,30 @@
 </head>
 
 <body>
-  <div class="phone-frame">
+  <!-- ✅ 상단 메뉴 버튼 + 패널 -->
+  <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false">☰</button>
 
-    <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false">☰</button>
+  <nav class="menu-panel" id="menuPanel" aria-hidden="true">
+    <button class="menu-close" id="menuClose" aria-label="메뉴 닫기">✕</button>
 
-    <nav class="menu-panel" id="menuPanel" aria-hidden="true">
-      <button class="menu-close" id="menuClose" aria-label="메뉴 닫기">✕</button>
-      <a href="#sec-hero" class="menu-link">초대합니다</a>
-      <a href="#sec-couple" class="menu-link">저희를 소개합니다</a>
-      <a href="#sec-ceremony" class="menu-link">이때, 이곳에서 결혼합니다</a>
-      <a href="#sec-gallery" class="menu-link">예쁘게 봐주세요</a>
-      <a href="#sec-info" class="menu-link">안내드립니다</a>
-    </nav>
+    <a href="#sec-hero" class="menu-link">초대합니다</a>
+    <a href="#sec-couple" class="menu-link">저희를 소개합니다</a>
+    <a href="#sec-ceremony" class="menu-link">이때, 이곳에서 결혼합니다</a>
+    <a href="#sec-gallery" class="menu-link">예쁘게 봐주세요</a>
+    <a href="#sec-info" class="menu-link">안내드립니다</a>
+  </nav>
 
-    <div class="menu-backdrop" id="menuBackdrop" hidden></div>
+  <div class="menu-backdrop" id="menuBackdrop" hidden></div>
 
-    <!-- HERO -->
-    <div class="bg-section bg-1" id="sec-hero">
-      <div class="inner">
-        <section class="hero">
+  <!-- ✅ 스크롤 컨테이너는 phone-frame 하나만 -->
+  <main class="phone-frame" id="scroller">
+    <div class="container">
+
+      <!-- BG 1 -->
+      <section class="bg-section bg-1" id="sec-hero">
+        <div class="bg-layer"></div>
+
+        <div class="hero">
           <div class="title fade-up delay-1">WEDDING INVITATION</div>
 
           <div class="names fade-up delay-2">
@@ -52,15 +56,15 @@
             그 시작의 순간을 함께 <br/>
             찬란히 빛내 주시면 감사하겠습니다.
           </div>
-        </section>
-      </div>
-    </div>
+        </div>
+      </section>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <!-- COUPLE -->
-    <div class="bg-section bg-2" id="sec-couple">
-      <div class="inner">
+      <!-- BG 2 -->
+      <section class="bg-section bg-2" id="sec-couple">
+        <div class="bg-layer"></div>
+
         <section class="couple-section">
           <h2 class="fade-up delay-1">저희는요,</h2>
 
@@ -95,26 +99,25 @@
               20살, 22살 대학교 선후배로 만나<br>
               친한 친구에서 가장 친한 연인으로 발전해<br>
 
-              <section class="section love-days-section">
+              <div class="love-days-section">
                 <div class="love-days-text" id="loveDaysText"></div>
-              </section>
+              </div>
 
               여러 시간이 쌓여 어느덧 교사라는 길을 함께 걸으며<br>
-              같은 목표를 갖고 미래를 그려나가려고 합니다.<br/>
+              같은 목표를 갖고 미래를 그려나가려고 합니다. <br/>
             </div>
           </section>
         </section>
-      </div>
-    </div>
+      </section>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <!-- CEREMONY -->
-    <div class="bg-section bg-3" id="sec-ceremony">
-      <div class="inner">
+      <!-- BG 3 -->
+      <section class="bg-section bg-3" id="sec-ceremony">
+        <div class="bg-layer"></div>
+
         <section class="ceremony">
           <h2 class="fade-up delay-1">예식 안내</h2>
-
           <div class="info fade-up delay-2">
             2026년 11월 29일 (일) 오후 5시<br />
             더링크 웨딩홀 5층 가든홀<br/>
@@ -138,243 +141,241 @@
 
         <div class="calendar fade-up delay-3">
           <div class="calendar-header">2026년 11월</div>
+
           <div class="calendar-grid">
             <span class="day-name">일</span><span class="day-name">월</span><span class="day-name">화</span>
             <span class="day-name">수</span><span class="day-name">목</span><span class="day-name">금</span><span class="day-name">토</span>
+
             <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
             <span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
             <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span>
             <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+
             <span class="wedding-day">
               <span class="day-number">29</span>
               <span class="heart-mark">♥</span>
             </span>
             <span>30</span>
           </div>
+
           <div class="calendar-caption" id="calendarCaption"></div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <!-- GALLERY -->
-    <div class="bg-section bg-4" id="sec-gallery">
-      <div class="inner">
+      <!-- BG 4 (Gallery) -->
+      <section class="bg-section bg-4" id="sec-gallery">
+        <div class="bg-layer"></div>
+
         <section class="photo-section">
           <h2 class="fade-up delay-1">갤러리</h2>
+
           <div class="photo-grid fade-up delay-2" id="photoGrid">
-            <img src="photo1.jpg" onclick="openViewer(0)" />
-            <img src="photo2.jpg" onclick="openViewer(1)" />
-            <img src="photo3.jpg" onclick="openViewer(2)" />
-            <img src="photo4.jpg" onclick="openViewer(3)" />
-            <img src="photo5.jpg" onclick="openViewer(4)" />
-            <img src="photo6.jpg" onclick="openViewer(5)" />
-            <img src="photo7.jpg" onclick="openViewer(6)" />
-            <img src="photo8.jpg" onclick="openViewer(7)" />
-            <img src="photo9.jpg" onclick="openViewer(8)" />
+            <!-- 1~9 -->
+            <img src="photo1.jpg"  data-idx="0" />
+            <img src="photo2.jpg"  data-idx="1" />
+            <img src="photo3.jpg"  data-idx="2" />
+            <img src="photo4.jpg"  data-idx="3" />
+            <img src="photo5.jpg"  data-idx="4" />
+            <img src="photo6.jpg"  data-idx="5" />
+            <img src="photo7.jpg"  data-idx="6" />
+            <img src="photo8.jpg"  data-idx="7" />
+            <img src="photo9.jpg"  data-idx="8" />
 
-            <img src="photo10.jpg" onclick="openViewer(9)" class="hidden" />
-            <img src="photo11.jpg" onclick="openViewer(10)" class="hidden" />
-            <img src="photo12.jpg" onclick="openViewer(11)" class="hidden" />
-            <img src="photo13.jpg" onclick="openViewer(12)" class="hidden" />
+            <!-- 10~ -->
+            <img src="photo10.jpg" data-idx="9"  class="hidden" />
+            <img src="photo11.jpg" data-idx="10" class="hidden" />
+            <img src="photo12.jpg" data-idx="11" class="hidden" />
+            <img src="photo13.jpg" data-idx="12" class="hidden" />
 
-            <button class="photo-more-btn-top" id="photoMoreBtnTop" onclick="togglePhotos()">∨</button>
+            <button class="photo-more-btn-top" id="photoMoreBtnTop" type="button">∨</button>
           </div>
 
-          <button class="photo-more-btn-bottom hidden" id="photoMoreBtnBottom" onclick="togglePhotos()">∧</button>
+          <button class="photo-more-btn-bottom hidden" id="photoMoreBtnBottom" type="button">∧</button>
         </section>
-      </div>
-    </div>
+      </section>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <!-- INFO -->
-    <div class="bg-section bg-5" id="sec-info">
-      <div class="inner">
+      <!-- BG 5 (Info) -->
+      <section class="bg-section bg-5" id="sec-info">
+        <div class="bg-layer"></div>
+
         <h2 class="fade-up delay-1">안내사항</h2>
+
         <section class="info-section fade-up delay-2">
-                  <!-- 오시는 길 -->
-        <div class="info-item">
-          <div class="account-header" onclick="toggleInfo(this)">
-            <span>오시는 길</span>
-            <span class="arrow">></span>
-          </div>
-          <div class="account-body">
-            <div class="location"><strong>더링크 웨딩홀 5층 가든홀</strong></div>
-
-            <div class="map-image">
-              <img src="map.png" alt="오시는 길 약도" />
-            </div>
-
-            <div class="map-buttons">
-              <a href="https://naver.me/FqWtKQUF" target="_blank" class="map-icon naver">
-                <img src="naver-map.png" alt="네이버 지도"/>
-              </a>
-              <a href="https://kko.to/6I8s2Z4dS8" target="_blank" class="map-icon kakao">
-                <img src="kakao-map.png" alt="카카오맵"/>
-              </a>
-              <a href="https://tmap.co.kr" target="_blank" class="map-icon tmap">
-                <img src="tmap.png" alt="Tmap"/>
-              </a>
-            </div>
-
-            <div class="traffic">
-              <strong>· 자가용 이용 시 : </strong> dkdk<br/>
-              <strong>· 지하철 이용 시 : </strong><br/>
-              <strong>· 버스 이용 시 : </strong>
-            </div>
-          </div>
-        </div>
-
-        <!-- 주차 안내 -->
-        <div class="info-wrapper">
           <div class="info-item">
-            <div class="account-header" onclick="toggleInfo(this)">
-              <span>주차 안내</span>
+            <div class="account-header">
+              <span>오시는 길</span>
               <span class="arrow">></span>
             </div>
             <div class="account-body">
-              <div class="parking">
-                최대 00대 주차 가능합니다.<br/>
-                (웨딩홀 앞 주차요원 지시를 따라주세요.)<br/>
-                1시간 30분 무료 (이후 00분당 000원)
+              <div class="location"><strong>더링크 웨딩홀 5층 가든홀</strong></div>
+
+              <div class="map-image">
+                <img src="map.png" alt="오시는 길 약도" />
+              </div>
+
+              <div class="map-buttons">
+                <a href="https://naver.me/FqWtKQUF" target="_blank" class="map-icon naver"><img src="naver-map.png" alt="네이버 지도"/></a>
+                <a href="https://kko.to/6I8s2Z4dS8" target="_blank" class="map-icon kakao"><img src="kakao-map.png" alt="카카오맵"/></a>
+                <a href="https://tmap.co.kr" target="_blank" class="map-icon tmap"><img src="tmap.png" alt="Tmap"/></a>
+              </div>
+
+              <div class="traffic">
+                <strong>· 자가용 이용 시 : </strong> dkdk<br/>
+                <strong>· 지하철 이용 시 : </strong><br/>
+                <strong>· 버스 이용 시 : </strong>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- 식사 안내 -->
-        <div class="info-wrapper">
-          <div class="info-item">
-            <div class="account-header" onclick="toggleInfo(this)">
-              <span>식사 안내</span>
-              <span class="arrow">></span>
-            </div>
-            <div class="account-body">
-              <div class="parking">
-                오후 4시 30분 ~ 6시 30분 이용 가능합니다.<br/>
-                (연회장은 예식 2주 전)
+          <div class="info-wrapper">
+            <div class="info-item">
+              <div class="account-header">
+                <span>주차 안내</span>
+                <span class="arrow">></span>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 신랑측 -->
-        <div class="info-wrapper">
-          <div class="info-item">
-            <div class="account-header" onclick="toggleInfo(this)">
-              <span>신랑측 마음 전하실 곳</span>
-              <span class="arrow">></span>
-            </div>
-            <div class="account-body">
-              <div class="thanks">
-                멀리서도 축하의 마음을 <br/>
-                전하고 싶으신 분들을 위해 안내드립니다.<br />
-                소중한 축하를 보내주신 <br/>
-                따뜻한 마음에 깊이 감사드립니다. 😊
-              </div>
-
-              <div class="account-row">
-                <div class="account-left">
-                  <span class="account-name">· 아버지 문대중</span>
-                  <span class="account-number">토스뱅크 !!!!!</span>
+              <div class="account-body">
+                <div class="parking">
+                  최대 00대 주차 가능합니다.<br/>
+                  (웨딩홀 앞 주차요원 지시를 따라주세요.)<br/>
+                  1시간 30분 무료 (이후 00분당 000원)
                 </div>
-                <img src="copy-icon.png" alt="복사" class="copy-icon" onclick="copyAccount('토스뱅크 !!!!!')">
-              </div>
-
-              <div class="account-row">
-                <div class="account-left">
-                  <span class="account-name">· 어머니 강소영</span>
-                  <span class="account-number">토스뱅크 !!!!!</span>
-                </div>
-                <img src="copy-icon.png" alt="복사" class="copy-icon" onclick="copyAccount('토스뱅크 !!!!!')">
-              </div>
-
-              <div class="account-row">
-                <div class="account-left">
-                  <span class="account-name">· 신랑 문용권</span>
-                  <span class="account-number">토스뱅크 1000-3779-1857</span>
-                </div>
-                <img src="copy-icon.png" alt="복사" class="copy-icon" onclick="copyAccount('토스뱅크 1000-3779-1857')">
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- 신부측 -->
-        <div class="info-wrapper">
-          <div class="info-item">
-            <div class="account-header" onclick="toggleInfo(this)">
-              <span>신부측 마음 전하실 곳</span>
-              <span class="arrow">></span>
-            </div>
-            <div class="account-body">
-              <div class="thanks">
-                멀리서도 축하의 마음을 <br/>
-                전하고 싶으신 분들을 위해 안내드립니다.<br />
-                소중한 축하를 보내주신 <br/>
-                따뜻한 마음에 깊이 감사드립니다. 😊
+          <div class="info-wrapper">
+            <div class="info-item">
+              <div class="account-header">
+                <span>식사 안내</span>
+                <span class="arrow">></span>
               </div>
-
-              <div class="account-row">
-                <div class="account-left">
-                  <span class="account-name">· 아버지 정충식</span>
-                  <span class="account-number">토스뱅크 1000-4900-3573</span>
+              <div class="account-body">
+                <div class="parking">
+                  오후 4시 30분 ~ 6시 30분 이용 가능합니다.<br/>
+                  (연회장은 예식 2주 전 )
                 </div>
-                <img src="copy-icon.png" alt="복사" class="copy-icon" onclick="copyAccount('토스뱅크 1000-4900-3573')">
-              </div>
-
-              <div class="account-row">
-                <div class="account-left">
-                  <span class="account-name">· 어머니 임민아</span>
-                  <span class="account-number">카카오뱅크 3333-03-2862735</span>
-                </div>
-                <img src="copy-icon.png" alt="복사" class="copy-icon" onclick="copyAccount('카카오뱅크 3333-03-2862735')">
-              </div>
-
-              <div class="account-row">
-                <div class="account-left">
-                  <span class="account-name">· 신부 정유진</span>
-                  <span class="account-number">토스뱅크 1000-4900-3573</span>
-                </div>
-                <img src="copy-icon.png" alt="복사" class="copy-icon" onclick="copyAccount('토스뱅크 1000-4900-3573')">
               </div>
             </div>
           </div>
-        </div>
+
+          <div class="info-wrapper">
+            <div class="info-item">
+              <div class="account-header">
+                <span>신랑측 마음 전하실 곳</span>
+                <span class="arrow">></span>
+              </div>
+              <div class="account-body">
+                <div class="thanks">
+                  멀리서도 축하의 마음을 <br/>
+                  전하고 싶으신 분들을 위해 안내드립니다.<br />
+                  소중한 축하를 보내주신 <br/>
+                  따뜻한 마음에 깊이 감사드립니다. 😊
+                </div>
+
+                <div class="account-row">
+                  <div class="account-left">
+                    <span class="account-name">· 아버지 문대중</span>
+                    <span class="account-number">토스뱅크 !!!!!</span>
+                  </div>
+                  <img src="copy-icon.png" alt="복사" class="copy-icon" data-copy="토스뱅크 !!!!!">
+                </div>
+
+                <div class="account-row">
+                  <div class="account-left">
+                    <span class="account-name">· 어머니 강소영</span>
+                    <span class="account-number">토스뱅크 !!!!!</span>
+                  </div>
+                  <img src="copy-icon.png" alt="복사" class="copy-icon" data-copy="토스뱅크 !!!!!">
+                </div>
+
+                <div class="account-row">
+                  <div class="account-left">
+                    <span class="account-name">· 신랑 문용권</span>
+                    <span class="account-number">토스뱅크 1000-3779-1857</span>
+                  </div>
+                  <img src="copy-icon.png" alt="복사" class="copy-icon" data-copy="토스뱅크 1000-3779-1857">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-wrapper">
+            <div class="info-item">
+              <div class="account-header">
+                <span>신부측 마음 전하실 곳</span>
+                <span class="arrow">></span>
+              </div>
+              <div class="account-body">
+                <div class="thanks">
+                  멀리서도 축하의 마음을 <br/>
+                  전하고 싶으신 분들을 위해 안내드립니다.<br />
+                  소중한 축하를 보내주신 <br/>
+                  따뜻한 마음에 깊이 감사드립니다. 😊
+                </div>
+
+                <div class="account-row">
+                  <div class="account-left">
+                    <span class="account-name">· 아버지 정충식</span>
+                    <span class="account-number">토스뱅크 1000-4900-3573</span>
+                  </div>
+                  <img src="copy-icon.png" alt="복사" class="copy-icon" data-copy="토스뱅크 1000-4900-3573">
+                </div>
+
+                <div class="account-row">
+                  <div class="account-left">
+                    <span class="account-name">· 어머니 임민아</span>
+                    <span class="account-number">카카오뱅크 3333-03-2862735</span>
+                  </div>
+                  <img src="copy-icon.png" alt="복사" class="copy-icon" data-copy="카카오뱅크 3333-03-2862735">
+                </div>
+
+                <div class="account-row">
+                  <div class="account-left">
+                    <span class="account-name">· 신부 정유진</span>
+                    <span class="account-number">토스뱅크 1000-4900-3573</span>
+                  </div>
+                  <img src="copy-icon.png" alt="복사" class="copy-icon" data-copy="토스뱅크 1000-4900-3573">
+                </div>
+              </div>
+            </div>
+          </div>
+
         </section>
-      </div>
+      </section>
+
+      <div class="divider"></div>
+
+      <footer class="footer">
+        저희의 새로운 시작을<br />
+        축복해주셔서 정말 감사합니다.
+      </footer>
+
     </div>
+  </main>
 
-    <div class="divider"></div>
-
-    <footer class="footer">
-      저희의 새로운 시작을<br />
-      축복해주셔서 정말 감사합니다.
-    </footer>
-
-    <!-- 사진 뷰어 -->
-    <div class="photo-viewer" id="photoViewer">
-      <div class="viewer-counter" id="viewerCounter">1 / 9</div>
-      <button class="viewer-close" onclick="closeViewer()">✕</button>
-      <button class="viewer-prev" onclick="prevPhoto()">‹</button>
-      <img id="viewerImage" alt="확대 이미지"/>
-      <button class="viewer-next" onclick="nextPhoto()">›</button>
-    </div>
-
-    <!-- BGM -->
-    <audio id="bgm" preload="auto" loop>
-      <source src="audio/bgm.mp3" type="audio/mpeg" />
-    </audio>
-
-    <button class="bgm-toggle" id="bgmBtn" aria-label="배경음악 켜기/끄기">
-      <img id="bgmIcon" src="volumedown.png" alt="음악 꺼짐" />
-    </button>
-
-    <div class="toast" id="bgmToast" aria-live="polite">🔊 음악이 재생됩니다</div>
-
+  <!-- ✅ 사진 뷰어 -->
+  <div class="photo-viewer" id="photoViewer" aria-hidden="true">
+    <div class="viewer-counter" id="viewerCounter">1 / 9</div>
+    <button class="viewer-close" id="viewerClose" type="button">✕</button>
+    <button class="viewer-prev" id="viewerPrev" type="button">‹</button>
+    <img id="viewerImage" alt="사진 크게 보기" />
+    <button class="viewer-next" id="viewerNext" type="button">›</button>
   </div>
+
+  <!-- ✅ BGM -->
+  <audio id="bgm" preload="auto" loop>
+    <source src="audio/bgm.mp3" type="audio/mpeg" />
+  </audio>
+
+  <button class="bgm-toggle" id="bgmBtn" aria-label="배경음악 켜기/끄기">
+    <img id="bgmIcon" src="volumedown.png" alt="음악 꺼짐" />
+  </button>
+
+  <div class="toast" id="bgmToast" aria-live="polite">🔊 음악이 재생됩니다</div>
 
   <script src="script.js"></script>
 </body>

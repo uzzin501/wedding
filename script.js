@@ -1,5 +1,17 @@
 /* =========================
-   계좌 복사
+   유틸: 토스트
+========================= */
+function showToast(msg, ms = 1800) {
+  const toast = document.getElementById('bgmToast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('show'), ms);
+}
+
+/* =========================
+   계좌 복사 (data-copy 사용)
 ========================= */
 function copyAccount(text) {
   navigator.clipboard.writeText(text)
@@ -8,65 +20,126 @@ function copyAccount(text) {
 }
 
 /* =========================
-   VH 세팅
+   페이드업
 ========================= */
-function setVh() {
-  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+function initFadeUp(scroller) {
+  const targets = document.querySelectorAll('.fade-up');
+  if (!targets.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    root: scroller || null   // ✅ phone-frame 스크롤 기준
+  });
+
+  targets.forEach(el => observer.observe(el));
 }
-setVh();
-window.addEventListener('resize', setVh);
 
 /* =========================
-   갤러리 펼침 상태 (전역)
+   현재 섹션 bg-layer만 보이게 (phone-frame 기준)
+========================= */
+function updateBgLayers(scroller) {
+  const sections = document.querySelectorAll('.bg-section');
+  if (!sections.length) return;
+
+  const rootRect = scroller
+    ? scroller.getBoundingClientRect()
+    : { top: 0, height: window.innerHeight };
+
+  const mid = rootRect.top + rootRect.height * 0.5;
+
+  let current = sections[0];
+
+  sections.forEach(sec => {
+    const r = sec.getBoundingClientRect();
+    if (r.top <= mid && r.bottom >= mid) current = sec;
+  });
+
+  sections.forEach(sec => {
+    const layer = sec.querySelector('.bg-layer');
+    if (!layer) return;
+    layer.style.opacity = (sec === current) ? '1' : '0';
+  });
+}
+
+/* =========================
+   갤러리 펼치기/접기
 ========================= */
 let photosOpened = false;
 
-/* =========================
-   사진 펼치기/접기 (HTML onclick에서 호출)
-========================= */
-function togglePhotos() {
-  const photos = document.querySelectorAll('.photo-grid img');
+function setGalleryState(opened) {
+  const photos = document.querySelectorAll('#photoGrid img[data-idx]');
   const btnTop = document.getElementById('photoMoreBtnTop');
   const btnBottom = document.getElementById('photoMoreBtnBottom');
 
-  photosOpened = !photosOpened;
+  photosOpened = opened;
 
-  photos.forEach((img, index) => {
-    if (index >= 9) {
-      img.classList.toggle('hidden', !photosOpened);
+  photos.forEach((img, idx) => {
+    if (idx >= 9) {
+      img.classList.toggle('hidden', !opened);
+      img.classList.toggle('is-blur', !opened);
     }
   });
 
-  if (btnTop) btnTop.classList.toggle('hidden', photosOpened);
-  if (btnBottom) btnBottom.classList.toggle('hidden', !photosOpened);
+  if (btnTop && btnBottom) {
+    btnTop.classList.toggle('hidden', opened);
+    btnBottom.classList.toggle('hidden', !opened);
+  }
 }
 
 /* =========================
-   사진 크게보기 뷰어
+   사진 뷰어
 ========================= */
 let currentPhotoIndex = 0;
 let photoList = [];
 
-function openViewer(index) {
-  photoList = Array.from(document.querySelectorAll('.photo-grid img'));
-  currentPhotoIndex = index;
+function lockScroll(lock) {
+  const scroller = document.getElementById('scroller');
+  if (!scroller) return;
+  scroller.classList.toggle('lock', !!lock);
+}
 
+function openViewer(index) {
+  const viewer = document.getElementById('photoViewer');
   const viewerImage = document.getElementById('viewerImage');
   const counter = document.getElementById('viewerCounter');
-  const viewer = document.getElementById('photoViewer');
+  if (!viewer || !viewerImage || !counter) return;
 
-  if (!viewerImage || !counter || !viewer) return;
+  // ✅ "숨김 처리된 것" 제외하고 리스트 구성
+  photoList = Array.from(document.querySelectorAll('#photoGrid img[data-idx]'))
+    .filter(img => !img.classList.contains('hidden'));
 
-  viewerImage.src = photoList[index].src;
-  counter.textContent = `${index + 1} / ${photoList.length}`;
+  currentPhotoIndex = Math.max(0, Math.min(index, photoList.length - 1));
+
+  viewerImage.src = photoList[currentPhotoIndex].src;
+  counter.textContent = `${currentPhotoIndex + 1} / ${photoList.length}`;
+
   viewer.classList.add('active');
-  document.body.style.overflow = 'hidden';
+  viewer.setAttribute('aria-hidden', 'false');
+
+  lockScroll(true);
 }
 
 function closeViewer() {
   const viewer = document.getElementById('photoViewer');
-  if (viewer) viewer.classList.remove('active');
-  document.body.style.overflow = '';
+  if (!viewer) return;
+  viewer.classList.remove('active');
+  viewer.setAttribute('aria-hidden', 'true');
+  lockScroll(false);
+}
+
+function updateViewerImage() {
+  const viewerImage = document.getElementById('viewerImage');
+  const counter = document.getElementById('viewerCounter');
+  if (!viewerImage || !counter) return;
+  viewerImage.src = photoList[currentPhotoIndex].src;
+  counter.textContent = `${currentPhotoIndex + 1} / ${photoList.length}`;
 }
 
 function prevPhoto() {
@@ -81,15 +154,6 @@ function nextPhoto() {
     currentPhotoIndex++;
     updateViewerImage();
   }
-}
-
-function updateViewerImage() {
-  const viewerImage = document.getElementById('viewerImage');
-  const counter = document.getElementById('viewerCounter');
-  if (!viewerImage || !counter) return;
-
-  viewerImage.src = photoList[currentPhotoIndex].src;
-  counter.textContent = `${currentPhotoIndex + 1} / ${photoList.length}`;
 }
 
 function initViewerTouch() {
@@ -110,30 +174,57 @@ function initViewerTouch() {
 }
 
 /* =========================
-   안내사항 접기/펼치기
+   메뉴
 ========================= */
-function toggleInfo(header) {
-  const infoItem = header.parentElement;
-  infoItem.classList.toggle('open');
+function initMenu(scroller) {
+  const menuBtn = document.getElementById('menuBtn');
+  const panel = document.getElementById('menuPanel');
+  const closeBtn = document.getElementById('menuClose');
+  const backdrop = document.getElementById('menuBackdrop');
+  const links = document.querySelectorAll('.menu-link');
+
+  if (!menuBtn || !panel || !closeBtn || !backdrop) return;
+
+  const open = () => {
+    panel.classList.add('open');
+    backdrop.hidden = false;
+    menuBtn.setAttribute('aria-expanded', 'true');
+    panel.setAttribute('aria-hidden', 'false');
+  };
+
+  const close = () => {
+    panel.classList.remove('open');
+    backdrop.hidden = true;
+    menuBtn.setAttribute('aria-expanded', 'false');
+    panel.setAttribute('aria-hidden', 'true');
+  };
+
+  menuBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+
+  links.forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      close();
+      const id = a.getAttribute('href');
+      const target = document.querySelector(id);
+      if (!target || !scroller) return;
+      scroller.scrollTo({ top: scroller.scrollTop + target.getBoundingClientRect().top - 10, behavior: 'smooth' });
+    });
+  });
 }
 
 /* =========================
-   페이드업(IntersectionObserver)
+   아코디언
 ========================= */
-function initFadeUp() {
-  const targets = document.querySelectorAll('.fade-up');
-  if (!targets.length) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('show');
-        observer.unobserve(entry.target);
-      }
+function initAccordion() {
+  document.querySelectorAll('.account-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const item = header.parentElement;
+      item.classList.toggle('open');
     });
-  }, { threshold: 0.15 });
-
-  targets.forEach(el => observer.observe(el));
+  });
 }
 
 /* =========================
@@ -142,25 +233,15 @@ function initFadeUp() {
 function initBgm() {
   const bgm = document.getElementById('bgm');
   const btn = document.getElementById('bgmBtn');
-  const toast = document.getElementById('bgmToast');
-
-  if (!bgm || !btn || !toast) return;
-
-  const showToast = (msg, ms = 1800) => {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => toast.classList.remove('show'), ms);
-  };
+  if (!bgm || !btn) return;
 
   bgm.volume = 0.35;
 
   const setUi = (playing) => {
     const img = document.getElementById('bgmIcon');
     if (!img) return;
-    img.src = playing ? 'volumeup.png' : 'volumedown.png';
+    img.src = playing ? 'volumedown.png' : 'volumeup.png';
     img.alt = playing ? '음악 켜짐' : '음악 꺼짐';
-    btn.classList.toggle('on', playing);
   };
 
   const tryAutoPlay = async () => {
@@ -210,10 +291,9 @@ function initBgm() {
 }
 
 /* =========================
-   DOMContentLoaded (1번만)
+   D-day / Love-day
 ========================= */
-document.addEventListener('DOMContentLoaded', () => {
-  // 1) 연애일/디데이
+function initDates() {
   const today = new Date();
 
   const loveStartDate = new Date(2020, 5, 30);
@@ -229,83 +309,80 @@ document.addEventListener('DOMContentLoaded', () => {
       daysLeft > 0 ? `${daysLeft}일 뒤에 만나요♥`
       : (daysLeft === 0 ? `오늘이 웨딩데이예요! 🎉` : `웨딩데이가 지났어요!`);
   }
+}
 
-  // 2) 사진 초기 상태(9장만)
-  const photos = document.querySelectorAll('.photo-grid img');
+/* =========================
+   DOM Ready
+========================= */
+document.addEventListener('DOMContentLoaded', () => {
+  const scroller = document.getElementById('scroller');
+
+  // 1) 날짜 텍스트
+  initDates();
+
+  // 2) 갤러리 초기(9장만)
+  setGalleryState(false);
+
+  // 3) 갤러리 버튼 이벤트
   const btnTop = document.getElementById('photoMoreBtnTop');
   const btnBottom = document.getElementById('photoMoreBtnBottom');
+  if (btnTop) btnTop.addEventListener('click', () => setGalleryState(true));
+  if (btnBottom) btnBottom.addEventListener('click', () => setGalleryState(false));
 
-  photos.forEach((img, index) => {
-    img.classList.toggle('hidden', index >= 9);
-  });
+  // 4) 갤러리 이미지 클릭 → 뷰어
+  const grid = document.getElementById('photoGrid');
+  if (grid) {
+    grid.addEventListener('click', (e) => {
+      const img = e.target.closest('img[data-idx]');
+      if (!img) return;
+      const idx = Number(img.getAttribute('data-idx')) || 0;
 
-  if (btnTop) btnTop.classList.remove('hidden');
-  if (btnBottom) btnBottom.classList.add('hidden');
+      // ✅ 현재 화면에 보이는(숨김 아닌) 인덱스로 변환해서 열기
+      const visible = Array.from(document.querySelectorAll('#photoGrid img[data-idx]'))
+        .filter(x => !x.classList.contains('hidden'));
+      const visibleIndex = visible.findIndex(x => x === img);
+      openViewer(visibleIndex >= 0 ? visibleIndex : 0);
+    });
+  }
 
-  // 3) 페이드업
-  initFadeUp();
+  // 5) 뷰어 버튼
+  const vClose = document.getElementById('viewerClose');
+  const vPrev = document.getElementById('viewerPrev');
+  const vNext = document.getElementById('viewerNext');
+  if (vClose) vClose.addEventListener('click', closeViewer);
+  if (vPrev) vPrev.addEventListener('click', prevPhoto);
+  if (vNext) vNext.addEventListener('click', nextPhoto);
 
-  // 4) 뷰어 터치
+  // 뷰어 배경 클릭 닫기
+  const viewer = document.getElementById('photoViewer');
+  if (viewer) {
+    viewer.addEventListener('click', (e) => {
+      if (e.target === viewer) closeViewer();
+    });
+  }
+
   initViewerTouch();
 
-  // 5) 메뉴
-  initMenu();
+  // 6) 복사 아이콘(data-copy)
+  document.querySelectorAll('.copy-icon[data-copy]').forEach(el => {
+    el.addEventListener('click', () => copyAccount(el.dataset.copy));
+  });
 
-  // 6) BGM
+  // 7) 아코디언
+  initAccordion();
+
+  // 8) 메뉴
+  initMenu(scroller);
+
+  // 9) 페이드업(스크롤 컨테이너 기준)
+  initFadeUp(scroller);
+
+  // 10) 배경 레이어 표시(스크롤 컨테이너 기준)
+  const doUpdateBg = () => updateBgLayers(scroller);
+  if (scroller) scroller.addEventListener('scroll', doUpdateBg, { passive: true });
+  window.addEventListener('resize', doUpdateBg);
+  doUpdateBg();
+
+  // 11) BGM
   initBgm();
 });
-
-function initMenu() {
-  const btn = document.getElementById('menuBtn');
-  const panel = document.getElementById('menuPanel');
-  const closeBtn = document.getElementById('menuClose');
-  const backdrop = document.getElementById('menuBackdrop');
-
-  if (!btn || !panel || !closeBtn || !backdrop) return;
-
-  function openMenu() {
-    panel.classList.add('open');
-    btn.setAttribute('aria-expanded', 'true');
-    panel.setAttribute('aria-hidden', 'false');
-    backdrop.hidden = false;
-
-    // ✅ 메뉴 열릴 때 배경 스크롤 방지(원하면 유지)
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeMenu() {
-    panel.classList.remove('open');
-    btn.setAttribute('aria-expanded', 'false');
-    panel.setAttribute('aria-hidden', 'true');
-    backdrop.hidden = true;
-
-    document.body.style.overflow = '';
-  }
-
-  btn.addEventListener('click', openMenu);
-  closeBtn.addEventListener('click', closeMenu);
-  backdrop.addEventListener('click', closeMenu);
-
-  // 메뉴 링크 클릭 시: 닫고 이동
-  panel.addEventListener('click', (e) => {
-    const a = e.target.closest('a.menu-link');
-    if (!a) return;
-    closeMenu();
-    // anchor 이동은 기본 동작 + scroll-behavior:smooth로 처리됨
-  });
-
-  // ESC로 닫기
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
-  });
-}
-
-function setVh() {
-  document.documentElement.style.setProperty(
-    '--vh',
-    `${window.innerHeight * 0.01}px`
-  );
-}
-setVh();
-window.addEventListener('resize', setVh);
-window.addEventListener('orientationchange', setVh);
