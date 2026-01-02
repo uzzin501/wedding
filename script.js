@@ -244,3 +244,26 @@ function initFadeUp() {
 document.addEventListener('DOMContentLoaded', () => {
   initFadeUp();
 });
+
+function updateBgLayers(){
+  const sections = document.querySelectorAll('.bg-section');
+
+  let current = sections[0];
+  const mid = window.innerHeight * 0.5;
+
+  sections.forEach(sec => {
+    const r = sec.getBoundingClientRect();
+    if (r.top <= mid && r.bottom >= mid) current = sec;
+  });
+
+  sections.forEach(sec => {
+    const layer = sec.querySelector('.bg-layer');
+    if (!layer) return;
+    layer.style.opacity = (sec === current) ? '1' : '0';
+    layer.style.transition = 'opacity 200ms ease';
+  });
+}
+
+window.addEventListener('scroll', updateBgLayers, { passive: true });
+window.addEventListener('resize', updateBgLayers);
+document.addEventListener('DOMContentLoaded', updateBgLayers);

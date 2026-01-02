@@ -70,12 +70,14 @@ body {
   font-size: 22px;
   letter-spacing: 2px;
   color: #555;
+  margin-bottom: 60px;
 }
 
 .names {
-  font-size: 28px;
+  font-size: 32px;
   margin: 24px 0 12px;
   font-weight: 700;
+  margin-bottom: 60px;
 }
 
 .heart {
@@ -87,8 +89,8 @@ body {
   font-size: 14px;
   line-height: 1.9;
   color: #555;
-  margin-top: 35px;
-  margin-bottom: 40px;
+  margin-top: 50px;
+  margin-bottom: 60px;
 }
 
 
@@ -97,8 +99,8 @@ body {
 ========================= */
 .divider {
   width: 60px;
-  height: 1px;
-  background: rgba(0,0,0,0.25);
+  height: 0px;
+  background: rgba(0,0,0,0);
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -108,41 +110,56 @@ body {
    배경 섹션
 ========================= */
 
+/* 섹션은 스크롤을 위해 내용만 늘어나게 */
 .bg-section{
   position: relative;
   width: 100%;
-  min-height: 100svh;
+  min-height: 100svh;   /* ✅ 내용이 길어지면 섹션 자체가 늘어나며 스크롤 생김 */
+  background: none;     /* ✅ 배경은 레이어가 담당 */
+  overflow: visible;
+}
+
+/* ✅ 배경 레이어: 뷰포트 기준 고정 -> 내용 높이 변화로 리사이즈(줌) 안 함 */
+.bg-layer{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100svh;
+  z-index: 0;
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
 }
 
-/* 하얀 오버레이 */
-.bg-section::before{
-  content: "";
-  position: absolute;
-  inset: 0;
+/* 오버레이 */
+.bg-layer::after{
+  content:"";
+  position:absolute;
+  inset:0;
   background: rgba(255,255,255,0.78);
 }
 
-/* 내용이 오버레이 위로 */
-.bg-section > *{
+/* 내용은 배경 위로 */
+.content{
   position: relative;
   z-index: 1;
-}
-
-.content{
   padding: 60px 20px;
   text-align: center;
 }
 
-.bg-1 { background-image: url('bg/bg1.jpg'); }
-.bg-2 { background-image: url('bg/bg2.jpg'); }
-.bg-3 { background-image: url('bg/bg3.jpg'); }
-.bg-4 { background-image: url('bg/bg4.jpg'); }
-.bg-5 { background-image: url('bg/bg5.jpg'); }
-.bg-6 { background-image: url('bg/bg6.jpg'); }
-
+/* 섹션별로 background-image를 bg-layer에 주기 */
+.bg-1 .bg-layer{ background-image: url('bg/bg1.jpg'); }
+.bg-2 .bg-layer{ background-image: url('bg/bg2.jpg'); }
+.bg-3 .bg-layer{ background-image: url('bg/bg3.jpg'); }
+.bg-4 .bg-layer{ background-image: url('bg/bg4.jpg'); }
+.bg-5 .bg-layer{ background-image: url('bg/bg5.jpg'); }
+.bg-6 .bg-layer{ background-image: url('bg/bg6.jpg'); }
 
 /* =========================
    공통 섹션
@@ -539,7 +556,6 @@ body {
   height: 40px;
   margin-top: 6px;
   background: rgba(255, 255, 255, 0);
-  -webkit-backdrop-filter: blur(8px);
   color: #333;
   font-size: 20px;
   font-weight: 700;
@@ -729,6 +745,7 @@ body {
   font-size: 12px;
   color: #888;
   margin-top: 60px;
+  margin-bottom: 60px;
   line-height: 1.6;
 }
 
@@ -795,15 +812,16 @@ body {
 .phone-frame{
   width: 100%;
   margin: 0 auto;
+  position: relative;
 }
 
+/* ✅ PC에서는 폰 프레임 폭(512px)만 배경 기준으로 */
 @media (min-width: 768px){
-  .phone-frame{
+  .bg-layer{
+    left: 50%;
     width: 512px;
-    min-height: 100vh;
-    margin: 0 auto;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
-    background: #faf9f7;
+    height: 100vh;
+    transform: translateX(-50%) translateZ(0);
   }
 }
 
