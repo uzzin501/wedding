@@ -4,6 +4,82 @@ function copyAccount(text) {
     .catch(() => alert('복사에 실패했습니다.'));
 }
 
+const toast = document.getElementById('bgmToast');
+
+const showToast = (msg = '🔊 음악이 재생됩니다', ms = 2000) => {
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('show'), ms);
+};
+
+
+// --- BGM ---
+document.addEventListener('DOMContentLoaded', () => {
+  const bgm = document.getElementById('bgm');
+  const btn = document.getElementById('bgmBtn');
+  if (!bgm || !btn) return;
+
+  bgm.volume = 0.35;
+
+  const setUi = (playing) => {
+    btn.textContent = playing ? '🔈' : '🔊';
+    btn.classList.toggle('on', playing);
+  };
+  
+
+  // 1) 자동재생 "시도" (PC에서 되는 경우도 있고, 모바일은 대부분 막힘)
+  const tryAutoPlay = async () => {
+    try {
+      await bgm.play();
+      setUi(true);
+      showToast();            // ✅ 추가: 재생 성공 시 2초 토스트
+      return true;
+    } catch (e) {
+      setUi(false);
+      return false;
+    }
+  };
+
+  // 페이지 로드 직후 한 번 시도
+  tryAutoPlay();
+
+  // 2) 모바일/정책 대비: 첫 터치/클릭 때 자동으로 다시 한 번 시도
+  const unlock = async () => {
+    const ok = await tryAutoPlay();
+    // 성공하면 이벤트 제거(불필요 반복 방지)
+    if (ok) {
+      document.removeEventListener('touchstart', unlock);
+      document.removeEventListener('click', unlock);
+    }
+  };
+
+  document.addEventListener('touchstart', unlock, { passive: true });
+  document.addEventListener('click', unlock);
+
+  // 3) 버튼으로 켜기/끄기
+  btn.addEventListener('click', async (e) => {
+    e.stopPropagation(); // 버튼 클릭이 unlock에 중복 영향을 주지 않게
+    try {
+      if (bgm.paused) {
+        await bgm.play();
+        setUi(true);
+      } else {
+        bgm.pause();
+        setUi(false);
+      }
+    } catch (err) {
+      // 여기서 실패하면 대부분 파일 경로/서버 문제 또는 브라우저 정책
+      alert('재생이 제한될 수 있어요. 파일 경로(audio/bgm.mp3)와 실행 방식(서버에서 열기)을 확인해 주세요.');
+      console.error(err);
+    }
+  });
+
+  // 처음 UI 상태
+  setUi(false);
+});
+
 let photosOpened = false;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -132,65 +208,3 @@ function toggleInfo(header) {
   infoItem.classList.toggle('open');
 }
 
-// --- BGM ---
-document.addEventListener('DOMContentLoaded', () => {
-  const bgm = document.getElementById('bgm');
-  const btn = document.getElementById('bgmBtn');
-  if (!bgm || !btn) return;
-
-  bgm.volume = 0.35;
-
-  const setUi = (playing) => {
-    btn.textContent = playing ? '🔈' : '🔊';
-    btn.classList.toggle('on', playing);
-  };
-
-  // 1) 자동재생 "시도" (PC에서 되는 경우도 있고, 모바일은 대부분 막힘)
-  const tryAutoPlay = async () => {
-    try {
-      await bgm.play();
-      setUi(true);
-      return true;
-    } catch (e) {
-      setUi(false);
-      return false;
-    }
-  };
-
-  // 페이지 로드 직후 한 번 시도
-  tryAutoPlay();
-
-  // 2) 모바일/정책 대비: 첫 터치/클릭 때 자동으로 다시 한 번 시도
-  const unlock = async () => {
-    const ok = await tryAutoPlay();
-    // 성공하면 이벤트 제거(불필요 반복 방지)
-    if (ok) {
-      document.removeEventListener('touchstart', unlock);
-      document.removeEventListener('click', unlock);
-    }
-  };
-
-  document.addEventListener('touchstart', unlock, { passive: true });
-  document.addEventListener('click', unlock);
-
-  // 3) 버튼으로 켜기/끄기
-  btn.addEventListener('click', async (e) => {
-    e.stopPropagation(); // 버튼 클릭이 unlock에 중복 영향을 주지 않게
-    try {
-      if (bgm.paused) {
-        await bgm.play();
-        setUi(true);
-      } else {
-        bgm.pause();
-        setUi(false);
-      }
-    } catch (err) {
-      // 여기서 실패하면 대부분 파일 경로/서버 문제 또는 브라우저 정책
-      alert('재생이 제한될 수 있어요. 파일 경로(audio/bgm.mp3)와 실행 방식(서버에서 열기)을 확인해 주세요.');
-      console.error(err);
-    }
-  });
-
-  // 처음 UI 상태
-  setUi(false);
-});
