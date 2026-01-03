@@ -315,6 +315,14 @@ function initDates() {
    DOM Ready
 ========================= */
 document.addEventListener('DOMContentLoaded', () => {
+  const video = document.querySelector('.hero-video');
+if (video) {
+  video.addEventListener('ended', () => {
+    video.pause();          // 확실히 멈춤
+    video.currentTime = video.duration; // 마지막 프레임 유지
+  });
+}
+
   const scroller = document.getElementById('scroller');
 
   // 1) 날짜 텍스트

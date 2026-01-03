@@ -15,6 +15,7 @@
   <nav class="menu-panel" id="menuPanel" aria-hidden="true">
     <button class="menu-close" id="menuClose" aria-label="메뉴 닫기">✕</button>
 
+    <a href="#sec-video" class="menu-link">비디오</a>
     <a href="#sec-hero" class="menu-link">초대합니다</a>
     <a href="#sec-couple" class="menu-link">저희를 소개합니다</a>
     <a href="#sec-ceremony" class="menu-link">이때, 이곳에서 결혼합니다</a>
@@ -27,6 +28,21 @@
   <!-- ✅ 스크롤 컨테이너는 phone-frame 하나만 -->
   <main class="phone-frame" id="scroller">
     <div class="container">
+
+      <!-- BG 0 -->
+      <section class="bg-section video-section" id="sec-video">
+        <div class="anchor"></div>
+        <video class="hero-video" 
+        autoplay 
+        muted 
+        playsinline
+        preload="metadata">
+          <source src="video/video.mp4" type="video/mp4" />
+        </video>
+      </section>
+
+<div class="divider"></div>
+
 
       <!-- BG 1 -->
       <section class="bg-section bg-1" id="sec-hero">
