@@ -236,55 +236,105 @@ function initAccordion() {
 function initBgm() {
   const bgm = document.getElementById('bgm');
   const btn = document.getElementById('bgmBtn');
+  const icon = document.getElementById('bgmIcon');
   if (!bgm || !btn) return;
 
-  bgm.volume = 0.35;
+  const VOL = 0.35;
 
-  const setUi = (playing) => {
-    const img = document.getElementById('bgmIcon');
-    if (!img) return;
-    img.src = playing ? 'volumeup.png' : 'volumedown.png';
+  // iOS/인앱 안정 옵션들
+  bgm.setAttribute('playsinline', '');
+  bgm.preload = 'auto';
+  bgm.loop = true;
+
+  const setUi = (playing, muted) => {
+    if (icon) icon.src = playing ? 'volumeup.png' : 'volumedown.png';
+    // 필요하면 muted 상태를 따로 표시하고 싶으면 여기서 처리 가능
   };
 
-  // 1️⃣ 로드 즉시 자동재생 시도 (될 환경에서는 여기서 바로 됨)
-  bgm.play()
-    .then(() => {
-      setUi(true);
-      showToast('🔊 배경음악이 재생됩니다');
-    })
-    .catch(() => {
-      setUi(false);
-      showToast('🔇 화면을 한 번 터치하면 음악이 재생됩니다');
-    });
-
-  // 2️⃣ 첫 터치에서 재생 (카톡 인앱 / iOS 대응)
-  const unlock = () => {
-    bgm.play()
-      .then(() => {
-        setUi(true);
-        showToast('🔊 배경음악이 재생됩니다');
-        document.removeEventListener('touchstart', unlock);
-        document.removeEventListener('click', unlock);
-      })
-      .catch(() => {});
-  };
-
-  document.addEventListener('touchstart', unlock, { passive: true });
-  document.addEventListener('click', unlock);
-
-  // 3️⃣ 토글 버튼
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (bgm.paused) {
-      bgm.play();
-      setUi(true);
-      showToast('🔊 음악이 재생됩니다');
-    } else {
-      bgm.pause();
-      setUi(false);
-      showToast('🔇 음악이 꺼졌어요');
+  const tryPlay = async (muted) => {
+    try {
+      bgm.muted = !!muted;
+      bgm.volume = muted ? 0 : VOL;
+      await bgm.play();
+      return true;
+    } catch (e) {
+      return false;
     }
+  };
+
+  // 1) 로드 직후: 유소리 먼저 시도 → 실패하면 무음 자동재생 시도
+  (async () => {
+    let ok = await tryPlay(false);
+    if (ok) {
+      setUi(true, false);
+      showToast?.('🔊 배경음악이 재생됩니다');
+      return;
+    }
+
+    ok = await tryPlay(true);
+    if (ok) {
+      setUi(true, true);
+      showToast?.('🔇 화면을 한번만 터치하면 소리가 켜져요');
+      // 소리는 잠겨도 "재생 자체는" 돌아가는 상태
+      return;
+    }
+
+    setUi(false, true);
+    showToast?.('🔇 자동재생이 차단됐어요. 화면을 한 번 터치해 주세요');
+  })();
+
+  // 2) 첫 사용자 제스처(스크롤 포함)에서 소리 켜기
+  const unlockSound = async () => {
+    // 이미 유소리면 해제 필요 없음
+    if (!bgm.paused && bgm.muted === false) {
+      cleanup();
+      return;
+    }
+
+    const ok = await tryPlay(false);
+    if (ok) {
+      setUi(true, false);
+      showToast?.('🔊 배경음악이 재생됩니다');
+      cleanup();
+    }
+  };
+
+  const cleanup = () => {
+    window.removeEventListener('touchstart', unlockSound, true);
+    window.removeEventListener('pointerdown', unlockSound, true);
+    window.removeEventListener('click', unlockSound, true);
+    window.removeEventListener('scroll', unlockSound, true);
+  };
+
+  window.addEventListener('touchstart', unlockSound, true);
+  window.addEventListener('pointerdown', unlockSound, true);
+  window.addEventListener('click', unlockSound, true);
+  window.addEventListener('scroll', unlockSound, true);
+
+  // 3) 버튼 토글
+  btn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+
+    if (bgm.paused) {
+      const ok = await tryPlay(false);
+      if (ok) {
+        setUi(true, false);
+        showToast?.('🔊 음악이 재생됩니다');
+      } else {
+        // 실패하면 무음이라도
+        const ok2 = await tryPlay(true);
+        setUi(ok2, true);
+        showToast?.(ok2 ? '🔇 무음으로 재생 중이에요' : '🔇 재생이 제한돼요');
+      }
+      return;
+    }
+
+    bgm.pause();
+    setUi(false, bgm.muted);
+    showToast?.('🔇 음악이 꺼졌어요');
   });
+
+  setUi(false, true);
 }
 
 
@@ -372,7 +422,7 @@ function initRsvpModal() {
       if (msg) msg.textContent = "전달 완료! 감사합니다 🙂";
       form.reset();
 
-      setTimeout(closeModal, 900);
+      setTimeout(closeModal, 1500);
     } catch (err) {
       console.error(err);
       if (msg) msg.textContent = "전달에 실패했어요. 잠시 후 다시 시도해 주세요.";
@@ -513,3 +563,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // ✅ 배경 비디오(1회 재생 후 멈춤)
   initHeroVideoOnceFreeze();
 });
+
+
+// rsvp 불참 선택 시 비활성화
+function initRsvpLogic() {
+  const attend = document.getElementById('attend');
+  const meal = document.getElementById('meal');
+  const guests = document.getElementById('guests');
+  if (!attend || !meal || !guests) return;
+
+  const sync = () => {
+    const off = attend.value === 'no';
+    meal.disabled = off;
+    guests.disabled = off;
+    if (off) {
+      meal.value = 'no';
+      guests.value = '0';
+    }
+  };
+
+  attend.addEventListener('change', sync);
+  sync();
+}
+document.addEventListener('DOMContentLoaded', initRsvpLogic);

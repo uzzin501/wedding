@@ -88,25 +88,91 @@
         <div class="modal-backdrop" id="rsvpModal" aria-hidden="true">
           <div class="modal" role="dialog" aria-modal="true" aria-labelledby="rsvpTitle">
             <button type="button" class="modal-close" id="rsvpClose" aria-label="닫기">✕</button>
-            <h3 id="rsvpTitle">참석 여부 전달</h3>
-            <form id="rsvpForm" class="rsvp-form">
-              <input name="name" type="text" placeholder="성함" required />
-              <div class="rsvp-row">
-                <label><input type="radio" name="attend" value="참석" required> 참석</label>
-                <label><input type="radio" name="attend" value="불참" required> 불참</label>
-              </div>
-              <select name="guests" required>
-                <option value="">동반 인원</option>
-                <option value="1">1명</option>
-                <option value="2">2명</option>
-                <option value="3">3명</option>
-                <option value="4">4명 이상</option>
-              </select>
-              <textarea name="memo" rows="3" placeholder="메모(선택)"></textarea>
-              <button type="submit" id="rsvpSubmit">전달하기</button>
-              <p class="rsvp-note">* 입력하신 정보는 예식 준비 목적으로만 사용됩니다.</p>
-              <p id="rsvpMsg" class="rsvp-msg" aria-live="polite"></p>
-            </form>
+            <form id="rsvpForm">
+  <!-- 제목(선택) -->
+  <h2 class="modal-title">참석 여부 전달</h2>
+
+  <!-- 1행: 성함 -->
+  <div class="rsvp-name">
+    <label for="rsvp-name">성함</label>
+    <input
+      id="rsvp-name"
+      type="text"
+      required
+    />
+  </div>
+
+  <!-- 1행: 어느 측 + 참석 여부 -->
+  <div class="rsvp-row">
+    <div class="field">
+      <label for="side">어느 측 하객이신가요?</label>
+      <select id="side" name="side" required>
+        <option value="" selected disabled>선택해 주세요</option>
+        <option value="groom">신랑 측</option>
+        <option value="bride">신부 측</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="attend">참석 여부</label>
+      <select id="attend" name="attend" required>
+        <option value="" selected disabled>선택해 주세요</option>
+        <option value="yes">참석</option>
+        <option value="no">불참</option>
+        <option value="maybe">미정</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 2행: 식사 여부 + 동행인 -->
+  <div class="rsvp-row">
+    <div class="field">
+      <label for="meal">식사 여부</label>
+      <select id="meal" name="meal" required>
+        <option value="" selected disabled>선택해 주세요</option>
+        <option value="yes">식사함</option>
+        <option value="no">식사 안 함</option>
+        <option value="maybe">미정</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="guests">동행인 명수</label>
+      <select id="guests" name="guests" required>
+        <option value="" selected disabled>선택</option>
+        <option value="0">본인만 (0)</option>
+        <option value="1">1명</option>
+        <option value="2">2명</option>
+        <option value="3">3명</option>
+        <option value="4">4명 이상</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 3행: 번호 뒷자리(중복 방지) -->
+  <div class="field">
+    <label for="phone4">휴대폰 번호 뒷자리 (중복 방지)</label>
+    <input
+      id="phone4"
+      name="phone4"
+      type="text"
+      inputmode="numeric"
+      pattern="[0-9]{4}"
+      maxlength="4"
+      placeholder="예) 1234"
+      required
+    />
+  </div>
+
+    <div class="rsvp-thanks">
+      감사합니다. 작성해주신 정보는 예식 준비로만 활용됩니다. 😊
+    </div>
+
+  <!-- 안내 메시지 / 전송 버튼 -->
+  <p id="rsvpMsg" aria-live="polite"></p>
+  <button id="rsvpSubmit" type="submit">전달하기</button>
+</form>
+
           </div>
         </div>
       </section>
@@ -174,25 +240,10 @@
           <div class="info fade-up delay-2">
             2026년 11월 29일 (일) 오후 5시<br />
             더링크 웨딩홀 5층 가든홀<br/>
-            <div class="shuttle">
-              (신도림역 1번 출구 셔틀버스 이용 가능합니다.)
-            </div>
           </div>
         </section>
 
-        <div class="map-buttons fade-up delay-2">
-          <a href="https://naver.me/FqWtKQUF" target="_blank" class="map-icon naver" aria-label="네이버 지도 길찾기">
-            <img src="naver-map.png" alt="네이버 지도"/>
-          </a>
-          <a href="https://kko.to/6I8s2Z4dS8" target="_blank" class="map-icon kakao" aria-label="카카오맵 길찾기">
-            <img src="kakao-map.png" alt="카카오맵"/>
-          </a>
-          <a href="https://tmap.co.kr" target="_blank" class="map-icon tmap" aria-label="Tmap 길찾기">
-            <img src="tmap.png" alt="Tmap"/>
-          </a>
-        </div>
-
-        <div class="calendar fade-up delay-3">
+        <div class="calendar fade-up delay-2">
           <div class="calendar-header">2026년 11월</div>
 
           <div class="calendar-grid">
@@ -213,6 +264,23 @@
 
           <div class="calendar-caption" id="calendarCaption"></div>
         </div>
+        <div class="map-buttons fade-up delay-2">
+          <a href="https://naver.me/FqWtKQUF" target="_blank" class="map-icon naver" aria-label="네이버 지도 길찾기">
+            <img src="naver-map.png" alt="네이버 지도"/>
+          </a>
+          <a href="https://kko.to/6I8s2Z4dS8" target="_blank" class="map-icon kakao" aria-label="카카오맵 길찾기">
+            <img src="kakao-map.png" alt="카카오맵"/>
+          </a>
+          <a href="https://tmap.co.kr" target="_blank" class="map-icon tmap" aria-label="Tmap 길찾기">
+            <img src="tmap.png" alt="Tmap"/>
+          </a>
+        </div>
+              <div class="shuttle">
+              (신도림역 1번 출구 셔틀버스 이용 가능합니다.)
+            </div>
+          <div class="map-image">
+            <img src="map.png" alt="오시는 길 약도" />
+          </div>
       </section>
 
       <div class="divider"></div>

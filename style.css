@@ -66,8 +66,6 @@ html, body{
 }
 
 
-
-
 /* =========================
    메뉴
 ========================= */
@@ -314,7 +312,9 @@ html, body{
 /* ✅ 모바일: 안 잘리게 전체 보이도록(여백 발생 가능) */
 @media (max-width: 767px){
   .bg-section.video-section .bg-layer .bg-video{
-    object-fit: contain;           /* ✅ 안 잘림 */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;           /* ✅ 안 잘림 */
     background: #000;              /* 남는 여백 배경 */
   }
 
@@ -476,13 +476,16 @@ html, body{
   font-weight: 400;
 }
 
-.shuttle{ font-size: 13px; font-weight: 200; color: #4d4d4d; }
+.shuttle{ 
+  font-size: 13px; font-weight: 200; color: #4d4d4d; 
+  margin-bottom: 16px;}
 
 .map-buttons{
   display: flex;
   justify-content: center;
   gap: 16px;
   margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .map-icon{
@@ -924,7 +927,7 @@ a{
 /* 버튼 */
 .rsvp-open{
   display:block;
-  margin: 50px auto;
+  margin: 10px auto;
   padding: 14px 18px;
   border: 0;
   border-radius: 20px;
@@ -946,46 +949,173 @@ a{
 }
 
 /* =========================
-   ✅ RSVP 모달 (예쁘게 업그레이드)
+   RSVP 모달 (업그레이드 버전)
 ========================= */
 
-/* 모달 배경(딤 + 블러) */
+/* 배경(딤 + 블러) */
 .modal-backdrop{
   position: fixed;
   inset: 0;
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 22px;
-  background: rgba(0,0,0,0.35);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  padding: 18px;
   z-index: 99999;
 }
 
-/* 열림 상태 */
 .modal-backdrop.show{ display:flex; }
 
 /* 모달 박스 */
 .modal{
   width: min(520px, 100%);
-  border-radius: 18px;
+  border-radius: 22px;
   padding: 18px 16px 16px;
   position: relative;
 
-  /* 너 사이트 톤과 맞는 "유리" 느낌 */
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.60);
 
-  box-shadow: 0 18px 60px rgba(0,0,0,.20);
-  animation: modalUp .25s ease-out;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.22);
+  animation: modalUp .22s ease-out;
   font-family: 'MyWeddingFont', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
 }
 
 @keyframes modalUp{
-  from{ opacity: 0; transform: translateY(16px) scale(0.98); }
+  from{ opacity: 0; transform: translateY(14px) scale(0.98); }
   to  { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* 상단 타이틀 영역(HTML에서 h2나 제목이 있다면 적용) */
+.modal h2, .modal .modal-title{
+  margin: 4px 0 10px;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: #333;
+}
+
+/* 닫기 버튼 (id가 rsvpClose라면 이거 먹음) */
+#rsvpClose{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.65);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+#rsvpClose:active{ transform: scale(0.98); }
+
+/* 폼 레이아웃 */
+#rsvpForm{
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* 라벨 */
+#rsvpForm label{
+  display: block;
+  text-align: left;
+  font-size: 12px;
+  color: #666;
+  margin: 2px 2px 6px;
+}
+
+/* 입력/셀렉트 공통 */
+#rsvpForm input,
+#rsvpForm select,
+#rsvpForm textarea{
+  width: 100%;
+  height: 44px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.65);
+  outline: none;
+  font-size: 14px;
+  color: #333;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .1s ease;
+}
+
+/* 텍스트영역이 있으면 */
+#rsvpForm textarea{
+  height: 90px;
+  padding-top: 11px;
+  resize: none;
+}
+
+.rsvp-thanks{
+  font-size: 13px;
+  margin: 4px 2px 0;
+}
+
+/* 포커스 */
+#rsvpForm input:focus,
+#rsvpForm select:focus,
+#rsvpForm textarea:focus{
+  border-color: rgba(243,166,179,0.8);
+  box-shadow: 0 0 0 4px rgba(243,166,179,0.18);
+}
+
+/* 두 칼럼(선택) — HTML에서 .rsvp-row로 묶으면 자동 2열 */
+.rsvp-row{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 380px){
+  .rsvp-row{ grid-template-columns: 1fr; }
+}
+
+/* 안내 문구 / 결과 메시지 */
+#rsvpMsg{
+  margin-top: 2px;
+  font-size: 13px;
+  color: #555;
+  text-align: center;
+}
+
+/* 제출 버튼 */
+#rsvpSubmit{
+  margin-top: 6px;
+  width: 100%;
+  height: 46px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(243,166,179,1), rgba(243,166,179,0.78));
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  box-shadow: 0 12px 26px rgba(243,166,179,0.35);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .2s ease, filter .2s ease;
+}
+
+#rsvpSubmit:hover{
+  filter: brightness(1.02);
+  box-shadow: 0 16px 34px rgba(243,166,179,0.40);
+}
+
+#rsvpSubmit:active{ transform: translateY(1px); }
+
+#rsvpSubmit:disabled{
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* 모달 안쪽 구분선 느낌(선택) */
+.modal .rsvp-divider{
+  height: 1px;
+  background: rgba(0,0,0,0.06);
+  margin: 5px 2px;
+}
