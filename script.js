@@ -586,3 +586,119 @@ function initRsvpLogic() {
   sync();
 }
 document.addEventListener('DOMContentLoaded', initRsvpLogic);
+  initContactModal(); // ✅ 추가
+function initContactModal() {
+  const openBtn = document.getElementById('contactOpen');
+  const modal = document.getElementById('contactModal');
+  const closeBtn = document.getElementById('contactClose');
+  const panel = document.getElementById('contactPanel');
+  const tabs = document.querySelectorAll('.contact-tabs .tab-btn');
+
+  if (!openBtn || !modal || !closeBtn || !panel) return;
+
+  const data = {
+    groom: [
+      { role: '신랑 아버지', name: '문대중', tel: '01011112222', highlight: false },
+      { role: '신랑 어머니', name: '강소영', tel: '01022223333', highlight: false },
+      { role: '신랑', name: '문용권', tel: '01073029104', highlight: true }
+    ],
+    bride: [
+      { role: '신부 아버지', name: '정충식', tel: '01040535922', highlight: false },
+      { role: '신부 어머니', name: '임민아', tel: '01094465922', highlight: false },
+      { role: '신부', name: '정유진', tel: '01036509851', highlight: true }
+    ]
+  };
+
+  function render(side) {
+    // 탭 UI
+    tabs.forEach(b => {
+      const on = b.dataset.tab === side;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+
+    // 안내드립니다와 같은 카드 구조로 렌더
+    const items = data[side] || [];
+    panel.innerHTML = `
+      <div class="contact-cards horizontal">
+        ${items.map(p => `
+          <div class="contact-card ${p.highlight ? 'highlight' : ''}">
+            <div class="card-text">
+              <div class="card-role">${p.role}</div>
+              <div class="card-name">${p.name}</div>
+            </div>
+            <div class="card-icons">
+              <a href="tel:${p.tel}" class="icon-link" aria-label="${p.name} 전화">
+                <img src="icons/call.png" alt="전화" class="icon-img">
+              </a>
+              <a href="sms:${p.tel}" class="icon-link" aria-label="${p.name} 문자">
+                <img src="icons/sms.png" alt="문자" class="icon-img">
+              </a>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function open(side='groom') {
+    render(side);
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+  }
+
+  function close() {
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  openBtn.addEventListener('click', () => open('groom'));
+  closeBtn.addEventListener('click', close);
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('show')) close();
+  });
+
+  tabs.forEach(b => {
+    b.addEventListener('click', () => render(b.dataset.tab));
+  });
+}
+
+
+function initContactModal() {
+  const openBtn = document.getElementById("contactOpen");
+  const modal = document.getElementById("contactModal");
+  const closeBtn = document.getElementById("contactClose");
+
+  if (!openBtn || !modal || !closeBtn) return;
+
+  const openModal = () => {
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+
+    groomItem?.classList.add("open");
+    brideItem?.classList.remove("open");
+  };
+
+  const closeModal = () => {
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+  };
+
+  openBtn.addEventListener("click", openModal);
+  closeBtn.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
+  });
+
+
+}

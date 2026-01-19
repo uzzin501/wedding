@@ -165,7 +165,7 @@
   </div>
 
     <div class="rsvp-thanks">
-      감사합니다. 작성해주신 정보는 예식 준비로만 활용됩니다. 😊
+      감사합니다. </br> 작성해주신 정보는 예식 준비로만 활용됩니다. 😊
     </div>
 
   <!-- 안내 메시지 / 전송 버튼 -->
@@ -194,7 +194,6 @@
                 <div class="role groom-color">신랑</div>
                 <div class="name">
                   문용권
-                  <a href="tel:01073029104" class="call-icon" aria-label="전화하기">☎</a>
                 </div>
                 <div class="parents">문대중 · 강소영의 아들</div>
               </div>
@@ -206,7 +205,6 @@
                 <div class="role bride-color">신부</div>
                 <div class="name">
                   정유진
-                  <a href="tel:01036509851" class="call-icon" aria-label="전화하기">☎</a>
                 </div>
                 <div class="parents">정충식 · 임민아의 딸</div>
               </div>
@@ -226,8 +224,126 @@
               같은 목표를 갖고 미래를 그려나가려고 합니다. <br/>
             </div>
           </section>
+
+          <!-- ✅ 커플 연락처 버튼 -->
+<button type="button" class="contact-open fade-up delay-4" id="contactOpen">
+  축하 연락 보내기
+</button>
+
+<!-- ✅ 연락처 모달(팝업) -->
+<!-- ✅ 연락처 모달(팝업) -->
+<div class="modal-backdrop" id="contactModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <button type="button" class="modal-close" id="contactClose" aria-label="닫기">✕</button>
+    <h2 class="modal-title" id="contactTitle">축하 연락 보내기</h2>
+
+    <!-- 신랑측 -->
+    <div class="info-wrapper">
+      <div class="info-item" id="coupleGroomItem">
+        <div class="account-header">
+          <span>신랑측 연락처</span>
+          <span class="arrow">></span>
+        </div>
+
+        <div class="account-body">
+          <div class="contact-cards horizontal">
+            <!-- 아버지 -->
+            <div class="contact-card">
+              <div class="card-text">
+                <div class="card-role">신랑 아버지</div>
+                <div class="card-name">문대중</div>
+              </div>
+              <div class="card-icons">
+                <a href="tel:01011112222" class="icon-link"><img src="icons/call.png" alt="전화" class="icon-img"></a>
+                <a href="sms:01011112222" class="icon-link"><img src="icons/sms.png" alt="문자" class="icon-img"></a>
+              </div>
+            </div>
+
+            <!-- 어머니 -->
+            <div class="contact-card">
+              <div class="card-text">
+                <div class="card-role">신랑 어머니</div>
+                <div class="card-name">강소영</div>
+              </div>
+              <div class="card-icons">
+                <a href="tel:01022223333" class="icon-link"><img src="icons/call.png" alt="전화" class="icon-img"></a>
+                <a href="sms:01022223333" class="icon-link"><img src="icons/sms.png" alt="문자" class="icon-img"></a>
+              </div>
+            </div>
+
+            <!-- 신랑 -->
+            <div class="contact-card highlight">
+              <div class="card-text">
+                <div class="card-role">신랑</div>
+                <div class="card-name">문용권</div>
+              </div>
+              <div class="card-icons">
+                <a href="tel:01073029104" class="icon-link"><img src="icons/call.png" alt="전화" class="icon-img"></a>
+                <a href="sms:01073029104" class="icon-link"><img src="icons/sms.png" alt="문자" class="icon-img"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 신부측 -->
+    <div class="info-wrapper">
+      <div class="info-item" id="coupleBrideItem">
+        <div class="account-header">
+          <span>신부측 연락처</span>
+          <span class="arrow">></span>
+        </div>
+
+        <div class="account-body">
+          <div class="contact-cards horizontal">
+            <!-- 아버지 -->
+            <div class="contact-card">
+              <div class="card-text">
+                <div class="card-role">신부 아버지</div>
+                <div class="card-name">정충식</div>
+              </div>
+              <div class="card-icons">
+                <a href="tel:01040535922" class="icon-link"><img src="icons/call.png" alt="전화" class="icon-img"></a>
+                <a href="sms:01040535922" class="icon-link"><img src="icons/sms.png" alt="문자" class="icon-img"></a>
+              </div>
+            </div>
+
+            <!-- 어머니 -->
+            <div class="contact-card">
+              <div class="card-text">
+                <div class="card-role">신부 어머니</div>
+                <div class="card-name">임민아</div>
+              </div>
+              <div class="card-icons">
+                <a href="tel:01094465922" class="icon-link"><img src="icons/call.png" alt="전화" class="icon-img"></a>
+                <a href="sms:01094465922" class="icon-link"><img src="icons/sms.png" alt="문자" class="icon-img"></a>
+              </div>
+            </div>
+
+            <!-- 신부 -->
+            <div class="contact-card highlight">
+              <div class="card-text">
+                <div class="card-role">신부</div>
+                <div class="card-name">정유진</div>
+              </div>
+              <div class="card-icons">
+                <a href="tel:01036509851" class="icon-link"><img src="icons/call.png" alt="전화" class="icon-img"></a>
+                <a href="sms:01036509851" class="icon-link"><img src="icons/sms.png" alt="문자" class="icon-img"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
         </section>
       </section>
+
 
       <div class="divider"></div>
 
@@ -275,10 +391,10 @@
             <img src="tmap.png" alt="Tmap"/>
           </a>
         </div>
-              <div class="shuttle">
+              <div class="shuttle fade-up delay-2">
               (신도림역 1번 출구 셔틀버스 이용 가능합니다.)
             </div>
-          <div class="map-image">
+          <div class="map-image fade-up delay-2">
             <img src="map.png" alt="오시는 길 약도" />
           </div>
       </section>

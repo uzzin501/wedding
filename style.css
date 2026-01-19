@@ -514,7 +514,7 @@ html, body{
 .map-icon.tmap{ background-color: #1a73e8; }
 
 .calendar{
-  margin: 24px auto 0;
+  margin: 10px auto 0;
   max-width: 340px;
   padding: 18px 14px 20px;
   border-radius: 16px;
@@ -931,7 +931,7 @@ a{
   padding: 14px 18px;
   border: 0;
   border-radius: 20px;
-  background:#f3a6b3;
+  background:rgba(255, 178, 191, 0.7);;
   color:#fff;
   font-size:16px;
 }
@@ -1119,3 +1119,46 @@ a{
   background: rgba(0,0,0,0.06);
   margin: 5px 2px;
 }
+
+/* 커플 연락처 버튼 (RSVP 버튼 느낌) */
+.contact-open{
+  display:block;
+  margin: 14px auto 0;
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 20px;
+  background:rgba(255, 178, 191, 0.7);
+  color:#fff;
+  font-size:16px;
+  width: min(150px, 80%);
+}
+
+/* 모달 안에서는 카드가 줄바꿈되게 */
+#contactModal .contact-cards.horizontal{
+  flex-wrap: wrap;
+}
+#contactModal .contact-card{
+  flex: 0 0 calc((100% - 20px) / 3) !important; /* 3등분 고정 */
+  min-width: 0;
+}
+@media (max-width: 380px){
+  #contactModal .contact-card{ flex-basis: 100%; }
+}
+
+
+/* 닫기 버튼 (id가 contactClose라면 이거 먹음) */
+#contactClose{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.65);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+#contactClose:active{ transform: scale(0.98); }
