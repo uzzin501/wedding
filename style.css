@@ -23,6 +23,7 @@
 .fade-up.show.delay-2 { animation-delay: 0.6s; }
 .fade-up.show.delay-3 { animation-delay: 1.2s; }
 .fade-up.show.delay-4 { animation-delay: 2.0s; }
+.fade-up.show.delay-5 { animation-delay: 3.0s; }
 
 /* =========================
    ✅ 스크롤은 phone-frame 딱 1개만
@@ -259,14 +260,93 @@ html, body{
   object-position: center;
 }
 
-/* 기존 흰색 반투명 오버레이 유지 */
-.bg-layer::after{
+/* =========================================================
+   VIDEO 섹션: 배경사진처럼 "섹션 안에" 깔기 + 모바일 최적화
+   - PC: cover (꽉 차게)
+   - Mobile: contain (안 잘리게, 여백은 자연스럽게 처리)
+========================================================= */
+
+/* 비디오 섹션 자체 */
+.bg-section.video-section{
+  position: relative;
+  height: 100dvh;
+  min-height: 100dvh;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ✅ video 섹션의 bg-layer는 fixed 규칙에서 제외 (섹션 기준 absolute) */
+.bg-section.video-section .bg-layer{
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+
+  opacity: 1 !important;           /* video 섹션은 항상 보이게 */
+  transition: none !important;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 비디오 배경 */
+.bg-section.video-section .bg-layer .bg-video{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;               /* 기본: 꽉 차게 */
+  object-position: center;         /* 필요하면 center 30% 등으로 조절 */
+
+  transform: translateZ(0);        /* 모바일 렌더 안정화 */
+  -webkit-transform: translateZ(0);
+}
+
+/* 흰 오버레이(배경사진 느낌 유지) */
+.bg-section.video-section .bg-layer::after{
   content:"";
   position:absolute;
   inset:0;
-  background: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.35); /* 원하면 0.25~0.55에서 조절 */
+  pointer-events:none;
 }
 
+/* ✅ 모바일: 안 잘리게 전체 보이도록(여백 발생 가능) */
+@media (max-width: 767px){
+  .bg-section.video-section .bg-layer .bg-video{
+    object-fit: contain;           /* ✅ 안 잘림 */
+    background: #000;              /* 남는 여백 배경 */
+  }
+
+  /* 여백이 거슬리면 가장자리 자연스럽게(옵션) */
+  .bg-section.video-section .bg-layer::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: radial-gradient(circle,
+      rgba(0,0,0,0) 35%,
+      rgba(0,0,0,0.25) 100%);
+    pointer-events:none;
+  }
+}
+
+/* PC에서 폰프레임(512px)일 때도 비디오 레이어는 섹션 폭에 맞춤 */
+@media (min-width: 768px){
+  .bg-section.video-section .bg-layer{
+    left: 0 !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+}
+
+.bg-section.video-section .bg-layer::after{
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.bg-section.video-section.show-overlay .bg-layer::after{
+  opacity: 5;
+}
 
 
 /* =========================

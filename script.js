@@ -230,97 +230,63 @@ function initAccordion() {
   });
 }
 
+/* =========================
+   BGM (최소·정석 버전)
+========================= */
 function initBgm() {
   const bgm = document.getElementById('bgm');
   const btn = document.getElementById('bgmBtn');
   if (!bgm || !btn) return;
 
-  const TARGET_VOLUME = 0.35;
+  bgm.volume = 0.35;
 
   const setUi = (playing) => {
     const img = document.getElementById('bgmIcon');
     if (!img) return;
     img.src = playing ? 'volumeup.png' : 'volumedown.png';
-    img.alt = playing ? '음악 켜짐' : '음악 꺼짐';
   };
 
-  const tryPlay = async ({ muted }) => {
-    try {
-      bgm.muted = !!muted;
-      bgm.volume = muted ? 0 : TARGET_VOLUME;
-      await bgm.play();
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
-  // 1) 로드시 "유소리" 먼저 시도
-  (async () => {
-    // 타이밍 보정(인앱에서 성공률이 약간 오르는 경우 있음)
-    await new Promise(r => setTimeout(r, 50));
-
-    let ok = await tryPlay({ muted: false });
-    if (ok) {
+  // 1️⃣ 로드 즉시 자동재생 시도 (될 환경에서는 여기서 바로 됨)
+  bgm.play()
+    .then(() => {
       setUi(true);
       showToast('🔊 배경음악이 재생됩니다');
-      return;
-    }
+    })
+    .catch(() => {
+      setUi(false);
+      showToast('🔇 화면을 한 번 터치하면 음악이 재생됩니다');
+    });
 
-    // 2) 유소리 실패 → "무음" 자동재생 시도(통과율↑)
-    ok = await tryPlay({ muted: true });
-    if (ok) {
-      setUi(true);
-      showToast('🔇 소리는 잠금 상태예요. 화면을 한 번만 움직이면 켜집니다');
-      return;
-    }
-
-    // 3) 무음도 실패면 완전 차단 상태
-    setUi(false);
-    showToast('🔇 자동재생이 차단됐어요. 화면을 한 번 터치하면 재생됩니다');
-  })();
-
-  // 4) 첫 제스처(스크롤 포함)에서 유소리 전환
-  const unlock = async () => {
-    const ok = await tryPlay({ muted: false });
-    if (!ok) return;
-
-    setUi(true);
-    showToast('🔊 배경음악이 재생됩니다');
-
-    window.removeEventListener('touchstart', unlock, true);
-    window.removeEventListener('pointerdown', unlock, true);
-    window.removeEventListener('click', unlock, true);
-    window.removeEventListener('scroll', unlock, true);
+  // 2️⃣ 첫 터치에서 재생 (카톡 인앱 / iOS 대응)
+  const unlock = () => {
+    bgm.play()
+      .then(() => {
+        setUi(true);
+        showToast('🔊 배경음악이 재생됩니다');
+        document.removeEventListener('touchstart', unlock);
+        document.removeEventListener('click', unlock);
+      })
+      .catch(() => {});
   };
 
-  window.addEventListener('touchstart', unlock, true);
-  window.addEventListener('pointerdown', unlock, true);
-  window.addEventListener('click', unlock, true);
-  window.addEventListener('scroll', unlock, true);
+  document.addEventListener('touchstart', unlock, { passive: true });
+  document.addEventListener('click', unlock);
 
-  // 5) 토글 버튼
-  btn.addEventListener('click', async (e) => {
+  // 3️⃣ 토글 버튼
+  btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    try {
-      if (bgm.paused) {
-        await tryPlay({ muted: false });
-        setUi(true);
-        showToast('🔊 음악이 재생됩니다');
-      } else {
-        bgm.pause();
-        setUi(false);
-        showToast('🔇 음악이 꺼졌어요');
-      }
-    } catch (err) {
+    if (bgm.paused) {
+      bgm.play();
+      setUi(true);
+      showToast('🔊 음악이 재생됩니다');
+    } else {
+      bgm.pause();
       setUi(false);
-      showToast('🔇 재생이 제한될 수 있어요');
-      console.error(err);
+      showToast('🔇 음악이 꺼졌어요');
     }
   });
-
-  setUi(false);
 }
+
 
 
 /* =========================
@@ -461,6 +427,20 @@ function initHeroVideoOnceFreeze() {
   document.addEventListener('touchstart', unlock, { passive: true });
   document.addEventListener('click', unlock);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const section = document.querySelector('.bg-section.video-section');
+  const video = section?.querySelector('video');
+
+  if (!section || !video) return;
+
+  video.addEventListener('play', () => {
+    setTimeout(() => {
+      section.classList.add('show-overlay');
+    }, 3000); // ✅ 5초
+  }, { once: true });
+});
+
 
 /* =========================
    DOM Ready
