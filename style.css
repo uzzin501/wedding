@@ -203,6 +203,7 @@ html, body{
 .bg-3 .bg-layer{ background-image: url('bg/bg3.jpg'); }
 .bg-4 .bg-layer{ background-image: url('bg/bg4.jpg'); }
 .bg-5 .bg-layer{ background-image: url('bg/bg5.jpg'); }
+.bg-6 .bg-layer{ background-image: url('bg/bg6.jpg'); }
 
 .video-section{
   position: relative;
@@ -565,6 +566,8 @@ html, body{
 .account-name{ font-weight: 700; font-size: 14px; color:#333; }
 .account-number{ font-weight: 400; font-size: 14px; color:#555; }
 
+.thanks{font-size: 14px;}
+
 .copy-icon{
   width: 18px;
   height: 18px;
@@ -684,4 +687,180 @@ html, body{
 /* ✅ 뷰어 열리면 scroller(폰프레임) 스크롤 잠금용 클래스 */
 .phone-frame.lock{
   overflow: hidden !important;
+}
+
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
+.icon-link{
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.icon-img{
+  width: 20px;     /* 원하는 크기 */
+  height: 20px;
+  display: block;  /* 아래쪽 여백/줄 생기는 것 방지 */
+}
+
+/* 가로 정렬 (무조건 한 줄) */
+.contact-cards.horizontal{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+  width: 100%;
+}
+
+/* 카드 */
+.contact-card{
+  flex: 0 0 calc((100% - 20px) / 3); /* 3개 고정 */
+  padding: 14px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  text-align: center;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* 카드 hover */
+.contact-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.15);
+}
+
+/* 신랑 카드 강조 */
+.contact-card.highlight{
+  background: rgba(255,255,255,0.5);
+}
+
+/* 텍스트 */
+.card-role{
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 4px;
+}
+
+.card-name{
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* 아이콘 영역 */
+.card-icons{
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* 아이콘 링크 */
+.icon-link{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.7);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+/* 아이콘 hover */
+.icon-link:hover{
+  transform: scale(1.15);
+  background: rgba(255,255,255,0.95);
+}
+
+/* 아이콘 이미지 */
+.icon-img{
+  width: 18px;
+  height: 18px;
+}
+
+.thankyou{
+  font-weight: 600;
+  font-size: 20px;
+  margin-top: 500px;
+}
+
+/* 버튼 */
+.rsvp-open{
+  display:block;
+  margin: 50px auto;
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 20px;
+  background:#f3a6b3;
+  color:#fff;
+  font-size:16px;
+}
+
+/* 모달 배경 */
+.modal-backdrop{
+  position: fixed;
+  inset: 0;
+  display: none;              /* 기본 숨김 */
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0);
+  z-index: 9999;
+}
+
+/* =========================
+   ✅ RSVP 모달 (예쁘게 업그레이드)
+========================= */
+
+/* 모달 배경(딤 + 블러) */
+.modal-backdrop{
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 99999;
+}
+
+/* 열림 상태 */
+.modal-backdrop.show{ display:flex; }
+
+/* 모달 박스 */
+.modal{
+  width: min(520px, 100%);
+  border-radius: 18px;
+  padding: 18px 16px 16px;
+  position: relative;
+
+  /* 너 사이트 톤과 맞는 "유리" 느낌 */
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.55);
+
+  box-shadow: 0 18px 60px rgba(0,0,0,.20);
+  animation: modalUp .25s ease-out;
+  font-family: 'MyWeddingFont', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+}
+
+@keyframes modalUp{
+  from{ opacity: 0; transform: translateY(16px) scale(0.98); }
+  to  { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 모달 타이틀/설명 (HTML에 h2/p 있으면 자동 적용) */
+.modal h2{
+  margin: 6px 0 8px;
+  font-size: 18px;
+  let
 }

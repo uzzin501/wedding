@@ -21,6 +21,7 @@
     <a href="#sec-ceremony" class="menu-link">이때, 이곳에서 결혼합니다</a>
     <a href="#sec-gallery" class="menu-link">예쁘게 봐주세요</a>
     <a href="#sec-info" class="menu-link">안내드립니다</a>
+    <a href="#sec-thankyou" class="menu-link">감사합니다</a>
   </nav>
 
   <div class="menu-backdrop" id="menuBackdrop" hidden></div>
@@ -32,7 +33,7 @@
       <!-- BG 0 -->
       <section class="bg-section video-section" id="sec-video">
         <div class="anchor"></div>
-        <video class="hero-video" 
+        <video id="heroVideo" class="hero-video"
         autoplay 
         muted 
         playsinline
@@ -42,7 +43,6 @@
       </section>
 
 <div class="divider"></div>
-
 
       <!-- BG 1 -->
       <section class="bg-section bg-1" id="sec-hero">
@@ -73,7 +73,39 @@
             찬란히 빛내 주시면 감사하겠습니다.
           </div>
         </div>
+
+        <!-- RSVP 버튼 -->
+         <button type="button" class="rsvp-open fade-up delay-4" id="rsvpOpen">
+          참석여부 전달하기
+        </button>
+
+        <!-- 모달(팝업) -->
+        <div class="modal-backdrop" id="rsvpModal" aria-hidden="true">
+          <div class="modal" role="dialog" aria-modal="true" aria-labelledby="rsvpTitle">
+            <button type="button" class="modal-close" id="rsvpClose" aria-label="닫기">✕</button>
+            <h3 id="rsvpTitle">참석 여부 전달</h3>
+            <form id="rsvpForm" class="rsvp-form">
+              <input name="name" type="text" placeholder="성함" required />
+              <div class="rsvp-row">
+                <label><input type="radio" name="attend" value="참석" required> 참석</label>
+                <label><input type="radio" name="attend" value="불참" required> 불참</label>
+              </div>
+              <select name="guests" required>
+                <option value="">동반 인원</option>
+                <option value="1">1명</option>
+                <option value="2">2명</option>
+                <option value="3">3명</option>
+                <option value="4">4명 이상</option>
+              </select>
+              <textarea name="memo" rows="3" placeholder="메모(선택)"></textarea>
+              <button type="submit" id="rsvpSubmit">전달하기</button>
+              <p class="rsvp-note">* 입력하신 정보는 예식 준비 목적으로만 사용됩니다.</p>
+              <p id="rsvpMsg" class="rsvp-msg" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
       </section>
+
 
       <div class="divider"></div>
 
@@ -281,6 +313,130 @@
           <div class="info-wrapper">
             <div class="info-item">
               <div class="account-header">
+                <span>신랑측 연락처</span>
+                <span class="arrow">></span>
+              </div>
+              <div class="account-body">
+                <div class="name-row">
+                  <div class="contact-cards">
+                    
+                    <div class="contact-cards horizontal">
+                        <!-- 신랑 아버지 -->
+                         <div class="contact-card">
+                          <div class="card-text">
+                            <div class="card-role">신랑 아버지</div>
+                            <div class="card-name">문대중</div>
+                          </div>
+                          <div class="card-icons">
+                            <a href="tel:01011112222" class="icon-link">
+                              <img src="icons/call.png" alt="전화" class="icon-img">
+                            </a>
+                            <a href="sms:01011112222" class="icon-link">
+                              <img src="icons/sms.png" alt="문자" class="icon-img">
+                            </a>
+                          </div>
+                        </div>
+                        <!-- 신랑 어머니 -->
+                         <div class="contact-card">
+                          <div class="card-text">
+                            <div class="card-role">신랑 어머니</div>
+                            <div class="card-name">강소영</div>
+                          </div>
+                          <div class="card-icons">
+                            <a href="tel:01022223333" class="icon-link">
+                              <img src="icons/call.png" alt="전화" class="icon-img">
+                            </a>
+                            <a href="sms:01022223333" class="icon-link">
+                              <img src="icons/sms.png" alt="문자" class="icon-img">
+                            </a>
+                          </div>
+                        </div>
+                        <!-- 신랑 -->
+                         <div class="contact-card highlight">
+                          <div class="card-text">
+                            <div class="card-role">신랑</div>
+                            <div class="card-name">문용권</div>
+                          </div>
+                          <div class="card-icons">
+                            <a href="tel:01073029104" class="icon-link">
+                              <img src="icons/call.png" alt="전화" class="icon-img">
+                            </a>
+                            <a href="sms:01073029104" class="icon-link">
+                              <img src="icons/sms.png" alt="문자" class="icon-img">
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-wrapper">
+            <div class="info-item">
+              <div class="account-header">
+                <span>신부측 연락처</span>
+                <span class="arrow">></span>
+              </div>
+              <div class="account-body">
+                <div class="name-row">
+                  <div class="contact-cards">
+                    
+                    <div class="contact-cards horizontal">
+                        <!-- 신부 아버지 -->
+                         <div class="contact-card">
+                          <div class="card-text">
+                            <div class="card-role">신부 아버지</div>
+                            <div class="card-name">정충식</div>
+                          </div>
+                          <div class="card-icons">
+                            <a href="tel:01040535922" class="icon-link">
+                              <img src="icons/call.png" alt="전화" class="icon-img">
+                            </a>
+                            <a href="sms:01040535922" class="icon-link">
+                              <img src="icons/sms.png" alt="문자" class="icon-img">
+                            </a>
+                          </div>
+                        </div>
+                        <!-- 신부 어머니 -->
+                         <div class="contact-card">
+                          <div class="card-text">
+                            <div class="card-role">신부 어머니</div>
+                            <div class="card-name">임민아</div>
+                          </div>
+                          <div class="card-icons">
+                            <a href="tel:01094465922" class="icon-link">
+                              <img src="icons/call.png" alt="전화" class="icon-img">
+                            </a>
+                            <a href="sms:01094465922" class="icon-link">
+                              <img src="icons/sms.png" alt="문자" class="icon-img">
+                            </a>
+                          </div>
+                        </div>
+                        <!-- 신부 -->
+                         <div class="contact-card highlight">
+                          <div class="card-text">
+                            <div class="card-role">신부</div>
+                            <div class="card-name">정유진</div>
+                          </div>
+                          <div class="card-icons">
+                            <a href="tel:01036509851" class="icon-link">
+                              <img src="icons/call.png" alt="전화" class="icon-img">
+                            </a>
+                            <a href="sms:01036509851" class="icon-link">
+                              <img src="icons/sms.png" alt="문자" class="icon-img">
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-wrapper">
+            <div class="info-item">
+              <div class="account-header">
                 <span>신랑측 마음 전하실 곳</span>
                 <span class="arrow">></span>
               </div>
@@ -365,9 +521,23 @@
 
       <div class="divider"></div>
 
+      <!-- BG 6 -->
+      <section class="bg-section bg-6" id="sec-thankyou">
+        <div class="bg-layer"></div>
+
+        <div class="thankyou">
+          <div class="thankyou fade-up delay-1">
+            저희의 새로운 시작을<br/>
+            찬란히 빛내주셔서 정말 감사합니다.
+          </div>
+        </div>
+      </section>
+
+      <div class="divider"></div>
+
       <footer class="footer">
         저희의 새로운 시작을<br />
-        축복해주셔서 정말 감사합니다.
+        찬란히 빛내주셔서 정말 감사합니다.
       </footer>
 
     </div>
@@ -394,5 +564,7 @@
   <div class="toast" id="bgmToast" aria-live="polite">🔊 음악이 재생됩니다</div>
 
   <script src="script.js"></script>
+
+  
 </body>
 </html>

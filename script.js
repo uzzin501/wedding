@@ -394,3 +394,99 @@ if (video) {
   // 11) BGM
   initBgm();
 });
+
+const openBtn  = document.getElementById("rsvpOpen");
+const modal    = document.getElementById("rsvpModal");
+const closeBtn = document.getElementById("rsvpClose");
+
+const form = document.getElementById("rsvpForm");
+const msg  = document.getElementById("rsvpMsg");
+const submitBtn = document.getElementById("rsvpSubmit");
+
+function openModal(){
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-lock");
+  msg.textContent = "";
+  // 첫 입력칸으로 포커스
+  setTimeout(() => {
+    const first = form.querySelector("input, select, textarea, button");
+    if (first) first.focus();
+  }, 0);
+}
+
+function closeModal(){
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-lock");
+  openBtn.focus();
+}
+
+openBtn.addEventListener("click", openModal);
+closeBtn.addEventListener("click", closeModal);
+
+// 배경(바깥) 클릭 시 닫기
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) closeModal();
+});
+
+// ESC로 닫기
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
+});
+
+// 제출(지금은 테스트용: 콘솔 출력 + 완료 메시지)
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  msg.textContent = "";
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "전송 중…";
+
+  const data = Object.fromEntries(new FormData(form).entries());
+  data.createdAt = new Date().toISOString();
+
+  try {
+    // ✅ 여기에서 "저장"을 수행하면 됨
+    // 1) Google Sheets(Apps Script)로 fetch POST
+    // 2) Formspree/Getform 등으로 전송
+    // 3) Firebase/Supabase 저장
+
+    console.log("RSVP 제출 데이터:", data);
+
+    msg.textContent = "전달 완료! 감사합니다 🙂";
+    form.reset();
+
+    // 1초 뒤 자동 닫기(원치 않으면 제거)
+    setTimeout(closeModal, 900);
+  } catch (err) {
+    console.error(err);
+    msg.textContent = "전달에 실패했어요. 잠시 후 다시 시도해 주세요.";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "전달하기";
+  }
+});
+
+const heroVideo = document.getElementById('heroVideo');
+
+if (heroVideo) {
+  // ✅ 비디오가 끝나면 마지막 프레임 유지(너가 원하던 상태)
+  heroVideo.addEventListener('ended', () => {
+    heroVideo.pause();
+    // currentTime은 마지막에 그대로 둬도 되는데,
+    // 혹시 ended 플래그 때문에 play가 안 먹는 케이스 방지로 pause만 확실히.
+  });
+
+  // ✅ 비디오를 클릭하면 "처음부터" 다시 재생
+  heroVideo.addEventListener('click', async () => {
+    try {
+      heroVideo.currentTime = 0;
+      await heroVideo.play();
+    } catch (e) {
+      // iOS에서 예외가 나면(정책/상태) 음소거 유지 + play 재시도
+      heroVideo.muted = true;
+      heroVideo.play();
+    }
+  });
+}
