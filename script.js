@@ -35,7 +35,7 @@ function initFadeUp(scroller) {
     });
   }, {
     threshold: 0.15,
-    root: scroller || null   // ✅ phone-frame 스크롤 기준
+    root: scroller || null
   });
 
   targets.forEach(el => observer.observe(el));
@@ -111,7 +111,7 @@ function openViewer(index) {
   const counter = document.getElementById('viewerCounter');
   if (!viewer || !viewerImage || !counter) return;
 
-  // ✅ "숨김 처리된 것" 제외하고 리스트 구성
+  // ✅ 숨김 처리된 것 제외하고 리스트 구성
   photoList = Array.from(document.querySelectorAll('#photoGrid img[data-idx]'))
     .filter(img => !img.classList.contains('hidden'));
 
@@ -122,7 +122,6 @@ function openViewer(index) {
 
   viewer.classList.add('active');
   viewer.setAttribute('aria-hidden', 'false');
-
   lockScroll(true);
 }
 
@@ -138,6 +137,7 @@ function updateViewerImage() {
   const viewerImage = document.getElementById('viewerImage');
   const counter = document.getElementById('viewerCounter');
   if (!viewerImage || !counter) return;
+
   viewerImage.src = photoList[currentPhotoIndex].src;
   counter.textContent = `${currentPhotoIndex + 1} / ${photoList.length}`;
 }
@@ -210,7 +210,10 @@ function initMenu(scroller) {
       const id = a.getAttribute('href');
       const target = document.querySelector(id);
       if (!target || !scroller) return;
-      scroller.scrollTo({ top: scroller.scrollTop + target.getBoundingClientRect().top - 10, behavior: 'smooth' });
+      scroller.scrollTo({
+        top: scroller.scrollTop + target.getBoundingClientRect().top - 10,
+        behavior: 'smooth'
+      });
     });
   });
 }
@@ -227,53 +230,81 @@ function initAccordion() {
   });
 }
 
-/* =========================
-   BGM
-========================= */
 function initBgm() {
   const bgm = document.getElementById('bgm');
   const btn = document.getElementById('bgmBtn');
   if (!bgm || !btn) return;
 
-  bgm.volume = 0.35;
+  const TARGET_VOLUME = 0.35;
 
   const setUi = (playing) => {
     const img = document.getElementById('bgmIcon');
     if (!img) return;
-    img.src = playing ? 'volumedown.png' : 'volumeup.png';
+    img.src = playing ? 'volumeup.png' : 'volumedown.png';
     img.alt = playing ? '음악 켜짐' : '음악 꺼짐';
   };
 
-  const tryAutoPlay = async () => {
+  const tryPlay = async ({ muted }) => {
     try {
+      bgm.muted = !!muted;
+      bgm.volume = muted ? 0 : TARGET_VOLUME;
       await bgm.play();
-      setUi(true);
       return true;
     } catch {
-      setUi(false);
       return false;
     }
   };
 
-  showToast('🔊 배경음악이 재생됩니다');
-  tryAutoPlay();
+  // 1) 로드시 "유소리" 먼저 시도
+  (async () => {
+    // 타이밍 보정(인앱에서 성공률이 약간 오르는 경우 있음)
+    await new Promise(r => setTimeout(r, 50));
 
-  const unlock = async () => {
-    const ok = await tryAutoPlay();
+    let ok = await tryPlay({ muted: false });
     if (ok) {
-      document.removeEventListener('touchstart', unlock);
-      document.removeEventListener('click', unlock);
+      setUi(true);
+      showToast('🔊 배경음악이 재생됩니다');
+      return;
     }
+
+    // 2) 유소리 실패 → "무음" 자동재생 시도(통과율↑)
+    ok = await tryPlay({ muted: true });
+    if (ok) {
+      setUi(true);
+      showToast('🔇 소리는 잠금 상태예요. 화면을 한 번만 움직이면 켜집니다');
+      return;
+    }
+
+    // 3) 무음도 실패면 완전 차단 상태
+    setUi(false);
+    showToast('🔇 자동재생이 차단됐어요. 화면을 한 번 터치하면 재생됩니다');
+  })();
+
+  // 4) 첫 제스처(스크롤 포함)에서 유소리 전환
+  const unlock = async () => {
+    const ok = await tryPlay({ muted: false });
+    if (!ok) return;
+
+    setUi(true);
+    showToast('🔊 배경음악이 재생됩니다');
+
+    window.removeEventListener('touchstart', unlock, true);
+    window.removeEventListener('pointerdown', unlock, true);
+    window.removeEventListener('click', unlock, true);
+    window.removeEventListener('scroll', unlock, true);
   };
 
-  document.addEventListener('touchstart', unlock, { passive: true });
-  document.addEventListener('click', unlock);
+  window.addEventListener('touchstart', unlock, true);
+  window.addEventListener('pointerdown', unlock, true);
+  window.addEventListener('click', unlock, true);
+  window.addEventListener('scroll', unlock, true);
 
+  // 5) 토글 버튼
   btn.addEventListener('click', async (e) => {
     e.stopPropagation();
     try {
       if (bgm.paused) {
-        await bgm.play();
+        await tryPlay({ muted: false });
         setUi(true);
         showToast('🔊 음악이 재생됩니다');
       } else {
@@ -282,13 +313,15 @@ function initBgm() {
         showToast('🔇 음악이 꺼졌어요');
       }
     } catch (err) {
-      alert('브라우저 정책으로 재생이 제한될 수 있어요.');
+      setUi(false);
+      showToast('🔇 재생이 제한될 수 있어요');
       console.error(err);
     }
   });
 
   setUi(false);
 }
+
 
 /* =========================
    D-day / Love-day
@@ -307,45 +340,153 @@ function initDates() {
   if (caption) {
     caption.textContent =
       daysLeft > 0 ? `${daysLeft}일 뒤에 만나요♥`
-      : (daysLeft === 0 ? `오늘이 웨딩데이예요! 🎉` : `웨딩데이가 지났어요!`);
+        : (daysLeft === 0 ? `오늘이 웨딩데이예요! 🎉` : `웨딩데이가 지났어요!`);
   }
+}
+
+/* =========================
+   RSVP 모달
+========================= */
+function initRsvpModal() {
+  const openBtn = document.getElementById("rsvpOpen");
+  const modal = document.getElementById("rsvpModal");
+  const closeBtn = document.getElementById("rsvpClose");
+
+  const form = document.getElementById("rsvpForm");
+  const msg = document.getElementById("rsvpMsg");
+  const submitBtn = document.getElementById("rsvpSubmit");
+
+  if (!openBtn || !modal || !closeBtn || !form) return;
+
+  function openModal() {
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-lock");
+    if (msg) msg.textContent = "";
+
+    setTimeout(() => {
+      const first = form.querySelector("input, select, textarea, button");
+      if (first) first.focus();
+    }, 0);
+  }
+
+  function closeModal() {
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-lock");
+    openBtn.focus();
+  }
+
+  openBtn.addEventListener("click", openModal);
+  closeBtn.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (msg) msg.textContent = "";
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "전송 중…";
+    }
+
+    const data = Object.fromEntries(new FormData(form).entries());
+    data.createdAt = new Date().toISOString();
+
+    try {
+      console.log("RSVP 제출 데이터:", data);
+
+      if (msg) msg.textContent = "전달 완료! 감사합니다 🙂";
+      form.reset();
+
+      setTimeout(closeModal, 900);
+    } catch (err) {
+      console.error(err);
+      if (msg) msg.textContent = "전달에 실패했어요. 잠시 후 다시 시도해 주세요.";
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "전달하기";
+      }
+    }
+  });
+}
+
+/* =========================
+   Hero Video (배경 비디오: 1회 재생 후 마지막 프레임 고정)
+========================= */
+function initHeroVideoOnceFreeze() {
+  const heroVideo = document.getElementById('heroVideo');
+  if (!heroVideo) return;
+
+  // 끝나면 마지막 프레임 유지
+  heroVideo.addEventListener('ended', () => {
+    heroVideo.pause();
+    // iOS에서 끝나면 첫 프레임으로 튀는 것 방지
+    try { heroVideo.currentTime = Math.max(0, heroVideo.duration - 0.05); } catch {}
+  });
+
+  // 클릭/터치하면 처음부터 다시 재생
+  const replay = async () => {
+    try {
+      heroVideo.currentTime = 0;
+      await heroVideo.play();
+    } catch (e) {
+      heroVideo.muted = true;
+      heroVideo.play();
+    }
+  };
+
+  heroVideo.addEventListener('click', replay);
+  heroVideo.addEventListener('touchend', replay, { passive: true });
+
+  // 자동재생이 막히는 환경 대비: 첫 제스처에서 재생 재시도
+  const unlock = async () => {
+    try {
+      await heroVideo.play();
+      document.removeEventListener('pointerdown', unlock);
+      document.removeEventListener('touchstart', unlock);
+      document.removeEventListener('click', unlock);
+    } catch {}
+  };
+
+  document.addEventListener('pointerdown', unlock, { passive: true });
+  document.addEventListener('touchstart', unlock, { passive: true });
+  document.addEventListener('click', unlock);
 }
 
 /* =========================
    DOM Ready
 ========================= */
 document.addEventListener('DOMContentLoaded', () => {
-  const video = document.querySelector('.hero-video');
-if (video) {
-  video.addEventListener('ended', () => {
-    video.pause();          // 확실히 멈춤
-    video.currentTime = video.duration; // 마지막 프레임 유지
-  });
-}
-
   const scroller = document.getElementById('scroller');
 
-  // 1) 날짜 텍스트
   initDates();
+  initRsvpModal();
 
-  // 2) 갤러리 초기(9장만)
+  // 갤러리 초기(9장만)
   setGalleryState(false);
 
-  // 3) 갤러리 버튼 이벤트
+  // 갤러리 버튼 이벤트
   const btnTop = document.getElementById('photoMoreBtnTop');
   const btnBottom = document.getElementById('photoMoreBtnBottom');
   if (btnTop) btnTop.addEventListener('click', () => setGalleryState(true));
   if (btnBottom) btnBottom.addEventListener('click', () => setGalleryState(false));
 
-  // 4) 갤러리 이미지 클릭 → 뷰어
+  // 갤러리 이미지 클릭 → 뷰어
   const grid = document.getElementById('photoGrid');
   if (grid) {
     grid.addEventListener('click', (e) => {
       const img = e.target.closest('img[data-idx]');
       if (!img) return;
-      const idx = Number(img.getAttribute('data-idx')) || 0;
 
-      // ✅ 현재 화면에 보이는(숨김 아닌) 인덱스로 변환해서 열기
       const visible = Array.from(document.querySelectorAll('#photoGrid img[data-idx]'))
         .filter(x => !x.classList.contains('hidden'));
       const visibleIndex = visible.findIndex(x => x === img);
@@ -353,7 +494,7 @@ if (video) {
     });
   }
 
-  // 5) 뷰어 버튼
+  // 뷰어 버튼
   const vClose = document.getElementById('viewerClose');
   const vPrev = document.getElementById('viewerPrev');
   const vNext = document.getElementById('viewerNext');
@@ -368,125 +509,27 @@ if (video) {
       if (e.target === viewer) closeViewer();
     });
   }
-
   initViewerTouch();
 
-  // 6) 복사 아이콘(data-copy)
+  // 복사 아이콘(data-copy)
   document.querySelectorAll('.copy-icon[data-copy]').forEach(el => {
     el.addEventListener('click', () => copyAccount(el.dataset.copy));
   });
 
-  // 7) 아코디언
+  // 아코디언 / 메뉴 / 페이드업
   initAccordion();
-
-  // 8) 메뉴
   initMenu(scroller);
-
-  // 9) 페이드업(스크롤 컨테이너 기준)
   initFadeUp(scroller);
 
-  // 10) 배경 레이어 표시(스크롤 컨테이너 기준)
+  // 배경 레이어 표시
   const doUpdateBg = () => updateBgLayers(scroller);
   if (scroller) scroller.addEventListener('scroll', doUpdateBg, { passive: true });
   window.addEventListener('resize', doUpdateBg);
   doUpdateBg();
 
-  // 11) BGM
+  // BGM
   initBgm();
+
+  // ✅ 배경 비디오(1회 재생 후 멈춤)
+  initHeroVideoOnceFreeze();
 });
-
-const openBtn  = document.getElementById("rsvpOpen");
-const modal    = document.getElementById("rsvpModal");
-const closeBtn = document.getElementById("rsvpClose");
-
-const form = document.getElementById("rsvpForm");
-const msg  = document.getElementById("rsvpMsg");
-const submitBtn = document.getElementById("rsvpSubmit");
-
-function openModal(){
-  modal.classList.add("show");
-  modal.setAttribute("aria-hidden", "false");
-  document.body.classList.add("modal-lock");
-  msg.textContent = "";
-  // 첫 입력칸으로 포커스
-  setTimeout(() => {
-    const first = form.querySelector("input, select, textarea, button");
-    if (first) first.focus();
-  }, 0);
-}
-
-function closeModal(){
-  modal.classList.remove("show");
-  modal.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("modal-lock");
-  openBtn.focus();
-}
-
-openBtn.addEventListener("click", openModal);
-closeBtn.addEventListener("click", closeModal);
-
-// 배경(바깥) 클릭 시 닫기
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) closeModal();
-});
-
-// ESC로 닫기
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
-});
-
-// 제출(지금은 테스트용: 콘솔 출력 + 완료 메시지)
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  msg.textContent = "";
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = "전송 중…";
-
-  const data = Object.fromEntries(new FormData(form).entries());
-  data.createdAt = new Date().toISOString();
-
-  try {
-    // ✅ 여기에서 "저장"을 수행하면 됨
-    // 1) Google Sheets(Apps Script)로 fetch POST
-    // 2) Formspree/Getform 등으로 전송
-    // 3) Firebase/Supabase 저장
-
-    console.log("RSVP 제출 데이터:", data);
-
-    msg.textContent = "전달 완료! 감사합니다 🙂";
-    form.reset();
-
-    // 1초 뒤 자동 닫기(원치 않으면 제거)
-    setTimeout(closeModal, 900);
-  } catch (err) {
-    console.error(err);
-    msg.textContent = "전달에 실패했어요. 잠시 후 다시 시도해 주세요.";
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "전달하기";
-  }
-});
-
-const heroVideo = document.getElementById('heroVideo');
-
-if (heroVideo) {
-  // ✅ 비디오가 끝나면 마지막 프레임 유지(너가 원하던 상태)
-  heroVideo.addEventListener('ended', () => {
-    heroVideo.pause();
-    // currentTime은 마지막에 그대로 둬도 되는데,
-    // 혹시 ended 플래그 때문에 play가 안 먹는 케이스 방지로 pause만 확실히.
-  });
-
-  // ✅ 비디오를 클릭하면 "처음부터" 다시 재생
-  heroVideo.addEventListener('click', async () => {
-    try {
-      heroVideo.currentTime = 0;
-      await heroVideo.play();
-    } catch (e) {
-      // iOS에서 예외가 나면(정책/상태) 음소거 유지 + play 재시도
-      heroVideo.muted = true;
-      heroVideo.play();
-    }
-  });
-}

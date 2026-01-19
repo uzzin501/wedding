@@ -32,15 +32,24 @@
 
       <!-- BG 0 -->
       <section class="bg-section video-section" id="sec-video">
+        <div class="bg-layer">
+          <video class="bg-video" autoplay muted playsinline preload="auto">
+            <source src="video/video.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <!-- 위에 올릴 내용이 있으면 여기에 -->
         <div class="anchor"></div>
-        <video id="heroVideo" class="hero-video"
-        autoplay 
-        muted 
-        playsinline
-        preload="metadata">
-          <source src="video/video.mp4" type="video/mp4" />
-        </video>
+          <div class="names fade-up delay-1">
+            용권 <span class="heart">♥</span> 유진
+          </div>       
+          <div class="invit fade-up delay-2">
+            2026년 11월 26일 오후 5시  더링크 5층 가든홀
+          </div>     
       </section>
+
+
+
 
 <div class="divider"></div>
 
@@ -50,10 +59,6 @@
 
         <div class="hero">
           <div class="title fade-up delay-1">WEDDING INVITATION</div>
-
-          <div class="names fade-up delay-2">
-            용권 <span class="heart">♥</span> 유진
-          </div>
 
           <div class="intro fade-up delay-3">
             <span class="quote">
@@ -553,9 +558,10 @@
   </div>
 
   <!-- ✅ BGM -->
-  <audio id="bgm" preload="auto" loop>
+  <audio id="bgm" preload="auto" loop playsinline muted>
     <source src="audio/bgm.mp3" type="audio/mpeg" />
   </audio>
+
 
   <button class="bgm-toggle" id="bgmBtn" aria-label="배경음악 켜기/끄기">
     <img id="bgmIcon" src="volumedown.png" alt="음악 꺼짐" />
@@ -565,6 +571,5 @@
 
   <script src="script.js"></script>
 
-  
 </body>
 </html>
